@@ -1,0 +1,3 @@
+include ':networklibrary'
+include ':app'
+rootProject.name = "Doctor"

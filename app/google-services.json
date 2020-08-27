@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "445134888023",
+    "firebase_url": "https://doctor-742ed.firebaseio.com",
+    "project_id": "doctor-742ed",
+    "storage_bucket": "doctor-742ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445134888023:android:dd5cfc8d5ff4c40a06d712",
+        "android_client_info": {
+          "package_name": "ai.mindful.doctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445134888023-g7jjt6eh4vq5bph3pmhmnflcs6u38h2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ai.mindful.doctor",
+            "certificate_hash": "9a73edde9aa2da2711d6df668a1811608829f413"
+          }
+        },
+        {
+          "client_id": "445134888023-lo60s7q15fs2gfqd62aiiamona9gavuf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGotOZZZRN4Ao0bN1z5RCn2nG-WUye8Cc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445134888023-lo60s7q15fs2gfqd62aiiamona9gavuf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
