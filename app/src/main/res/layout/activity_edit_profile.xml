@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="ai.mindful.doctor.ui.viewmodel.EditProfileActivityViewModel" />
@@ -12,16 +13,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".EditProfileActivity">
+        tools:context=".EditProfileActivity"
+        android:background="@color/colorWhite">
 
         <Button
-            android:onClick="@{()->viewmodel.backPressed()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save changes"
             android:layout_alignParentBottom="true"
             android:background="@color/colorLightGrey"
-            android:fontFamily="@font/poppins"/>
+            android:fontFamily="@font/poppins"
+            android:onClick="@{()->viewmodel.backPressed()}"
+            android:text="Save changes" />
 
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -35,209 +37,287 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/profile_app_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    app:elevation="0dp">
-
-                    <com.google.android.material.appbar.CollapsingToolbarLayout
-                        android:id="@+id/profile_collapsing_section"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipChildren="false"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                        <LinearLayout
-                            android:id="@+id/expanded_toolbar_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginHorizontal="16dp"
-                            android:layout_marginTop="32dp"
-                            android:layout_marginBottom="16dp">
-
-                            <ImageView
-                                android:onClick="@{()->viewmodel.backPressed()}"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_back"
-                                app:tint="@color/colorWhite"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Edit profile"
-                                android:textColor="@color/colorWhite"
-                                android:fontFamily="@font/poppins"
-                                android:textSize="22sp"
-                                android:layout_marginTop="16dp"/>
-
-                        </LinearLayout>
-
-                        <androidx.appcompat.widget.Toolbar
-                            android:layout_width="match_parent"
-                            android:layout_height="?attr/actionBarSize"
-                            android:layout_above="@+id/button"
-                            android:layout_alignParentStart="true"
-                            app:titleTextColor="@color/colorWhite"
-                            android:gravity="top"
-                            app:elevation="0dp"
-                            android:minHeight="?android:attr/actionBarSize"/>
-
-                    </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                </com.google.android.material.appbar.AppBarLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
                     android:orientation="vertical">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/ic_user"
-                        app:civ_border_color="@color/colorPrimary"
-                        android:layout_gravity="center_horizontal"
-                        app:civ_border_width="1dp"
-                        android:layout_marginTop="32dp"/>
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:id="@+id/profile_app_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
+                        app:elevation="0dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_name"
+                        <com.google.android.material.appbar.CollapsingToolbarLayout
+                            android:id="@+id/profile_collapsing_section"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipChildren="false"
+                            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                            <LinearLayout
+                                android:id="@+id/expanded_toolbar_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="16dp"
+                                android:layout_marginTop="32dp"
+                                android:layout_marginBottom="16dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewmodel.backPressed()}"
+                                    android:src="@drawable/ic_back"
+                                    app:tint="@color/colorWhite" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:fontFamily="@font/poppins"
+                                    android:text="Edit profile"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="22sp" />
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.Toolbar
+                                android:layout_width="match_parent"
+                                android:layout_height="?attr/actionBarSize"
+                                android:layout_above="@+id/button"
+                                android:layout_alignParentStart="true"
+                                android:gravity="top"
+                                android:minHeight="?android:attr/actionBarSize"
+                                app:elevation="0dp"
+                                app:titleTextColor="@color/colorWhite" />
+
+                        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                    </com.google.android.material.appbar.AppBarLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Name">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_mobile"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Mobile">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="phone"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_bio"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Bio"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="200"
-                        app:counterOverflowTextColor="@color/colorRed"
-                        app:counterTextColor="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:minLines="5"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_college"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="College name">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_qualification"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Qualifications degree">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_experience"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Experience (in months)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/et_expertise"
                         android:layout_marginBottom="70dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Expertise in">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_picture"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="32dp"
+                            android:src="@drawable/ic_user"
+                            app:civ_border_color="@color/colorPrimary"
+                            app:civ_border_width="1dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="Personal details"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="@color/colorBlack"
-                            android:fontFamily="@font/poppins" />
+                            android:layout_marginHorizontal="16dp"
+                            android:hint="Name">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="textPersonName"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:hint="Mobile">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="phone"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_bio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:hint="Bio"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="200"
+                            app:counterOverflowTextColor="@color/colorRed"
+                            app:counterTextColor="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="text"
+                                android:minLines="5"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="Professional details"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_college"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:hint="College name">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="text"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_qualification"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:hint="Qualifications degree">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="text"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_experience"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:hint="Experience (in months)">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="number"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/et_expertise"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:hint="Expertise in">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:inputType="text"
+                                android:textColor="@color/colorBlack" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="Documents"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/poppins_light"
+                            android:text="Pan card"
+                            android:textColor="@color/colorDarkGrey"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/pan_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:src="@drawable/image_placeholder" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/poppins_light"
+                            android:text="Aadhar card"
+                            android:textColor="@color/colorDarkGrey"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/aadhar_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:src="@drawable/image_placeholder" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/poppins_light"
+                            android:text="Cheque book"
+                            android:textColor="@color/colorDarkGrey"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/cheque_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:src="@drawable/image_placeholder" />
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
-
-            </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
 
