@@ -14,19 +14,30 @@ import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
 import ai.mindful.doctor.utils.ViewModelFactory
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import io.shivamvk.networklibrary.BuildConfig
+import io.shivamvk.networklibrary.api.ApiManager
+import io.shivamvk.networklibrary.api.ApiManagerListener
+import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
+import io.shivamvk.networklibrary.model.UtilModel
+import io.shivamvk.networklibrary.model.banner.BannerResponse
+import io.shivamvk.networklibrary.models.BaseModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.imaginativeworld.whynotimagecarousel.CarouselItem
 import javax.inject.Inject
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), ApiManagerListener {
 
     @Inject
     lateinit var apiService: ApiService
+
     @Inject
     lateinit var prefs: SharedPreferences
     lateinit var binding: FragmentHomeBinding
@@ -64,22 +75,13 @@ class HomeFragment : Fragment() {
         binding.help.setOnClickListener {
             (context as MainActivity).openGmail()
         }
-        for (i in 1..10) {
-            if (i % 2 == 0) {
-                carousel1List.add(
-                    CarouselItem(
-                        imageUrl = "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-                    )
-                )
-            } else {
-                carousel1List.add(
-                    CarouselItem(
-                        imageUrl = "https://images.unsplash.com/photo-1557825835-a526494be845?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-                    )
-                )
-            }
-        }
-        binding.carousel1.addData(carousel1List)
+        ApiManager(
+            ApiRoutes.getHomeBanners,
+            apiService,
+            UtilModel(),
+            this,
+            null
+        ).doGETAPICall()
         binding.activeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 Snackbar.make(active_switch, "You are now marked active!", Snackbar.LENGTH_SHORT)
@@ -91,5 +93,25 @@ class HomeFragment : Fragment() {
                     .show()
             }
         }
+    }
+
+    override fun onSuccess(dataModel: BaseModel?, response: String) {
+        if (dataModel is UtilModel) {
+            var data = Gson().fromJson(response, BannerResponse::class.java).data
+            for (banner in data!!) {
+                carousel1List.add(
+                    CarouselItem(
+                        imageUrl = "${BuildConfig.AWSURL}${banner.image}"
+                    )
+                )
+            }
+            binding.carousel1.addData(carousel1List)
+        }
+    }
+
+    override fun onFailure(dataModel: BaseModel?, e: Throwable) {
+        super.onFailure(dataModel, e)
+        Toast.makeText(context, "${e.localizedMessage}. Please try again!", Toast.LENGTH_SHORT)
+            .show()
     }
 }
