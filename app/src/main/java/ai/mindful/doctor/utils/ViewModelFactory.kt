@@ -1,6 +1,7 @@
 package ai.mindful.doctor.utils
 
 import ai.mindful.doctor.ui.viewmodel.EditProfileActivityViewModel
+import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
 import ai.mindful.doctor.ui.viewmodel.LoginActivityViewModel
 import android.app.Activity
 import android.content.SharedPreferences
@@ -19,6 +20,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(EditProfileActivityViewModel::class.java) -> {
                 EditProfileActivityViewModel(apiService, activity, prefs) as T
+            }
+            modelClass.isAssignableFrom(HomeFragmentViewModel::class.java) -> {
+                HomeFragmentViewModel(apiService, activity, prefs) as T
             }
             else -> throw IllegalArgumentException("Unknown class name")
         }

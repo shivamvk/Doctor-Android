@@ -4,15 +4,240 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewmodel"
+            type="ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel" />
+    </data>
+
     <RelativeLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Home fragment"/>
+            android:orientation="vertical"
+            android:layout_marginTop="70dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dashboard"
+                android:layout_marginHorizontal="16dp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/poppins"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check this button when you're active and accepting calls"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="@color/colorBlack"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="16dp"
+                android:id="@+id/active_switch"/>
+
+
+            <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                android:id="@+id/carousel1"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:carouselBackground="@color/white"
+                app:carouselType="SHOWCASE"
+                app:imagePlaceholder="@drawable/ic_carousel_placeholder"
+                app:imageScaleType="centerCrop"
+                app:imageViewId="@+id/image_view"
+                app:itemLayout="@layout/carousel_item_layout"
+                app:autoPlay="true"
+                app:autoPlayDelay="5000"
+                app:showBottomShadow="false"
+                app:showCaption="false"
+                app:showIndicator="false"
+                app:showNavigationButtons="false"
+                app:showTopShadow="false" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/appointment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="3dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginVertical="8dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Appointments"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/poppins"/>
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            app:lottie_rawRes="@raw/appointment_anim"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginVertical="8dp"
+                    app:cardElevation="3dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Profile"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/poppins"/>
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            app:lottie_rawRes="@raw/appointment_anim"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:id="@+id/wallet"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="3dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginVertical="8dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wallet"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/poppins"/>
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            app:lottie_rawRes="@raw/appointment_anim"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:id="@+id/help"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginVertical="8dp"
+                    app:cardElevation="3dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Help"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/poppins"/>
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            app:lottie_rawRes="@raw/appointment_anim"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

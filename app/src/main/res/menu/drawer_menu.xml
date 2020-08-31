@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_appointment"
             android:icon="@drawable/ic_notes"
-            android:title="Appointments" />
+            android:title="History" />
 
         <item
             android:id="@+id/nav_wallet"
@@ -29,34 +29,39 @@
             android:title="Terms and conditions" />
 
         <item
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/ic_security"
+            android:title="Privacy policy" />
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit"
             android:title="Logout" />
 
 <!--        <item-->
 <!--            android:id="@+id/nav_call_history"-->
-<!--            android:icon="@drawable/ic_baseline_history_24"-->
+<!--            android:ic_logo="@drawable/ic_baseline_history_24"-->
 <!--            android:title="Call History" />-->
 <!--        <item-->
 <!--            android:id="@+id/nav_notification"-->
-<!--            android:icon="@drawable/ic_notification"-->
+<!--            android:ic_logo="@drawable/ic_notification"-->
 <!--            android:title="Notification" />-->
 <!--        <item-->
 <!--            android:id="@+id/nav_support"-->
-<!--            android:icon="@drawable/ic_baseline_mail_outline_24"-->
+<!--            android:ic_logo="@drawable/ic_baseline_mail_outline_24"-->
 <!--            android:title="Support" />-->
 <!--        <item-->
 <!--            android:id="@+id/nav_blog"-->
-<!--            android:icon="@drawable/ic_baseline_format_align_left_24"-->
+<!--            android:ic_logo="@drawable/ic_baseline_format_align_left_24"-->
 <!--            android:title="Our Blog" />-->
 <!--        <item-->
 <!--            android:id="@+id/nav_privacy"-->
-<!--            android:icon="@drawable/ic_privacy_policy"-->
+<!--            android:ic_logo="@drawable/ic_privacy_policy"-->
 <!--            android:title="Terms and conditions" />-->
 
 <!--        <item-->
 <!--            android:id="@+id/nav_logout"-->
-<!--            android:icon="@drawable/ic_exit"-->
+<!--            android:ic_logo="@drawable/ic_exit"-->
 <!--            android:title="Logout" />-->
 
     </group>

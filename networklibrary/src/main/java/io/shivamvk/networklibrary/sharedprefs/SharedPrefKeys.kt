@@ -5,5 +5,6 @@ enum class SharedPrefKeys {
     USER_ID,
     USER_EMAIL,
     USER_NAME,
-    USER_PICTURE
+    USER_PICTURE,
+    FCM_TOKEN
 }
