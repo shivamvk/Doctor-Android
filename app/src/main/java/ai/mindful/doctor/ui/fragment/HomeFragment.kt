@@ -98,6 +98,7 @@ class HomeFragment : Fragment(), ApiManagerListener {
     override fun onSuccess(dataModel: BaseModel?, response: String) {
         if (dataModel is UtilModel) {
             var data = Gson().fromJson(response, BannerResponse::class.java).data
+            carousel1List.clear()
             for (banner in data!!) {
                 carousel1List.add(
                     CarouselItem(
