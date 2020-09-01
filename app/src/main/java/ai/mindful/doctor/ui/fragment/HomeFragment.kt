@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ai.mindful.doctor.R
+import ai.mindful.doctor.VideoCallActivity
 import ai.mindful.doctor.databinding.FragmentHomeBinding
 import ai.mindful.doctor.di.DoctorApplication
 import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
@@ -92,6 +93,14 @@ class HomeFragment : Fragment(), ApiManagerListener {
                     .setAction("Close") {}
                     .show()
             }
+        }
+        binding.call.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    VideoCallActivity::class.java
+                )
+            )
         }
     }
 
