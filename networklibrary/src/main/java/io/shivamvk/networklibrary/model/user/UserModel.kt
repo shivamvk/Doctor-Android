@@ -1,5 +1,8 @@
 package io.shivamvk.networklibrary.model.user
 
+import io.shivamvk.networklibrary.models.BaseModel
+import java.io.Serializable
+
 data class UserModel(
     var _id: String? = null,
     val active: Boolean? = false,
@@ -12,4 +15,4 @@ data class UserModel(
     val education: String = "",
     val college: String = "",
     val gender: String = ""
-)
+): BaseModel, Serializable

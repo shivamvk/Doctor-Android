@@ -15,8 +15,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        buildConfigField "String", "BASEURL", "\"http://35.154.143.115/api/\""
-        buildConfigField "String", "AWSURL", "\"https://tempth.s3.ap-south-1.amazonaws.com/\""
+        //umed
+        buildConfigField "String", "BASEURL", "\"http://52.66.243.61/api/\""
+        buildConfigField "String", "AWSURL", "\"https://telehealth-mindful.s3.ap-south-1.amazonaws.com/\""
+        //eaze me up
+//        buildConfigField "String", "BASEURL", "\"http://13.233.10.116/api/\""
+//        buildConfigField "String", "AWSURL", "\"https://eazemeup.s3.ap-south-1.amazonaws.com/\""
     }
 
     buildTypes {

@@ -3,15 +3,178 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="booking"
+            type="io.shivamvk.networklibrary.model.appointment.AppointmentModel" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <RelativeLayout
-        android:id="@+id/activity_video_chat_view"
+        android:id="@+id/appointment_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
+        <Button
+            android:id="@+id/call"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorLightGrey"
+            android:fontFamily="@font/poppins"
+            android:text="Call in progress"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="16dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/back_from_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:src="@drawable/ic_back"
+                    app:tint="@color/colorBlack" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="In call with"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="22sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Patient details"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@{booking.patient.name}"
+                            android:textColor="@color/colorDarkGrey"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_light"
+                            android:text="@{booking.patient.age.toString() + ',' + ' ' + booking.patient.gender}"
+                            android:textColor="@color/colorDarkGrey"
+                            android:textSize="14sp" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_light"
+                            android:text="@{booking.patient.relationWithAccountHolder + ' ' + @string/of + ' ' + booking.createdBy.full_name}"
+                            android:textColor="@color/colorDarkGrey"
+                            android:textSize="14sp" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Patient details"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:elevation="5dp"
+        android:id="@+id/screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/video_call_activity_dragging_motion_scene"
         tools:context="ai.mindful.doctor.VideoCallActivity">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back"
+            android:visibility="invisible"/>
+
 
         <RelativeLayout
             android:id="@+id/remote_video_view_container"
             android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary">
 
@@ -59,9 +222,7 @@
             android:id="@+id/local_video_view_container"
             android:layout_width="150dp"
             android:layout_height="200dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="@dimen/local_preview_margin_top"
             android:layout_marginEnd="@dimen/local_preview_margin_right"
             android:layout_marginRight="@dimen/local_preview_margin_right"
@@ -75,43 +236,80 @@
                 android:src="@drawable/agora_logo" />
         </FrameLayout>
 
+        <ImageView
+            android:id="@+id/btn_call"
+            android:layout_width="@dimen/call_button_size"
+            android:layout_height="@dimen/call_button_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/btn_endcall" />
+
+        <ImageView
+            android:id="@+id/btn_switch_camera"
+            android:layout_width="@dimen/other_button_size"
+            android:layout_height="@dimen/other_button_size"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/btn_switch_camera" />
+
+        <ImageView
+            android:id="@+id/btn_mute"
+            android:layout_width="@dimen/other_button_size"
+            android:layout_height="@dimen/other_button_size"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/btn_unmute" />
+
         <RelativeLayout
             android:id="@+id/control_panel"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="16dp">
 
-            <ImageView
-                android:id="@+id/btn_call"
-                android:layout_width="@dimen/call_button_size"
-                android:layout_height="@dimen/call_button_size"
-                android:layout_centerInParent="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/btn_endcall" />
+<!--            <ImageView-->
+<!--                android:id="@+id/btn_call"-->
+<!--                android:layout_width="@dimen/call_button_size"-->
+<!--                android:layout_height="@dimen/call_button_size"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/btn_endcall" />-->
 
-            <ImageView
-                android:id="@+id/btn_switch_camera"
-                android:layout_width="@dimen/other_button_size"
-                android:layout_height="@dimen/other_button_size"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="32dp"
-                android:layout_toEndOf="@id/btn_call"
-                android:layout_toRightOf="@id/btn_call"
-                android:scaleType="centerCrop"
-                android:src="@drawable/btn_switch_camera" />
+<!--            <ImageView-->
+<!--                android:id="@+id/btn_switch_camera"-->
+<!--                android:layout_width="@dimen/other_button_size"-->
+<!--                android:layout_height="@dimen/other_button_size"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginLeft="32dp"-->
+<!--                android:layout_toEndOf="@id/btn_call"-->
+<!--                android:layout_toRightOf="@id/btn_call"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/btn_switch_camera" />-->
 
-            <ImageView
-                android:id="@+id/btn_mute"
-                android:layout_width="@dimen/other_button_size"
-                android:layout_height="@dimen/other_button_size"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="32dp"
-                android:layout_toStartOf="@id/btn_call"
-                android:layout_toLeftOf="@id/btn_call"
-                android:scaleType="centerCrop"
-                android:src="@drawable/btn_unmute" />
+<!--            <ImageView-->
+<!--                android:id="@+id/btn_mute"-->
+<!--                android:layout_width="@dimen/other_button_size"-->
+<!--                android:layout_height="@dimen/other_button_size"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginRight="32dp"-->
+<!--                android:layout_toStartOf="@id/btn_call"-->
+<!--                android:layout_toLeftOf="@id/btn_call"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/btn_unmute" />-->
         </RelativeLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</RelativeLayout>
 </layout>

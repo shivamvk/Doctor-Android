@@ -7,28 +7,66 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/no_item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:layout_marginTop="150dp"
-            android:orientation="vertical">
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="200dp"
                 android:layout_height="250dp"
-                app:lottie_rawRes="@raw/no_item_anim"
                 app:lottie_autoPlay="true"
-                app:lottie_loop="true"/>
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/no_item_anim" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
                 android:text="All your appointments will appear here"
-                android:textSize="14sp"
                 android:textColor="@color/colorBlack"
-                android:fontFamily="@font/poppins"/>
+                android:textSize="14sp" />
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/items_layout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="70dp"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Appointments"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="22sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_appointments"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </RelativeLayout>
 

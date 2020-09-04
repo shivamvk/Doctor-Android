@@ -1,6 +1,7 @@
 package ai.mindful.doctor.di
 
 import ai.mindful.doctor.*
+import ai.mindful.doctor.ui.fragment.AppointmentFragment
 import ai.mindful.doctor.ui.fragment.HomeFragment
 import dagger.Component
 import io.shivamvk.networklibrary.NetworkModule
@@ -15,5 +16,7 @@ interface AppComponent {
     fun inject(activity: EditProfileActivity)
     fun inject(fragment: HomeFragment)
     fun inject(activity: VideoCallActivity)
+    fun inject(fragment: AppointmentFragment)
+    fun inject(activity: OnboardingActivity)
     //create fun inject() for all the activities, fragments etc using dagger
 }

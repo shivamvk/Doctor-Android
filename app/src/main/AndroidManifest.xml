@@ -22,6 +22,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".OnboardingActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".AppointmentDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".VideoCallActivity"
             android:theme="@style/AppTheme.NoActionBar" />

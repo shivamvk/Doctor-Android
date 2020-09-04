@@ -25,13 +25,20 @@ class SplashActivity : AppCompatActivity() {
 
     fun openActivity(){
         if (prefs[SharedPrefKeys.USER_TOKEN.toString(),""]?.isEmpty()!!){
-            startActivity(Intent(
-                this, LoginActivity::class.java
-            ))
+            if (!prefs[SharedPrefKeys.ONBOARDING_DONE.toString(), false]!!){
+                startActivity(Intent(
+                    this, OnboardingActivity::class.java
+                ))
+            } else {
+                startActivity(Intent(
+                    this, LoginActivity::class.java
+                ))
+            }
         } else {
             startActivity(Intent(
                 this, MainActivity::class.java
             ))
         }
+        finish()
     }
 }

@@ -154,10 +154,12 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
         if (et_name.editText?.text.toString().isEmpty()) {
             et_name.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
             et_name.error = "Name is required"
+            return false
         }
         if (!tv_tnc_pp.isChecked) {
             Toast.makeText(this, "Please accept the terms and conditions", Toast.LENGTH_SHORT)
                 .show()
+            return false
         }
         return true
     }
@@ -213,20 +215,26 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
         if (dataModel is AuthResponse) {
-            var data = Gson().fromJson(response, AuthResponse::class.java).data
-            prefs[SharedPrefKeys.USER_TOKEN.toString()] = data?.token
-            prefs[SharedPrefKeys.USER_ID.toString()] = data?.user?._id
-            prefs[SharedPrefKeys.USER_NAME.toString()] = data?.user?.full_name
-            prefs[SharedPrefKeys.USER_EMAIL.toString()] = data?.user?.email
-            prefs[SharedPrefKeys.USER_PICTURE.toString()] = data?.user?.profile_picture
-            finish()
-            (application as DoctorApplication).initDagger()
-            startActivity(
-                Intent(
-                    this,
-                    MainActivity::class.java
+            var model = Gson().fromJson(response, AuthResponse::class.java)
+            if (model.errors){
+                Toast.makeText(this, model.message, Toast.LENGTH_SHORT).show()
+                viewModel.loading.postValue(false)
+            } else {
+                var data = model.data
+                prefs[SharedPrefKeys.USER_TOKEN.toString()] = data?.token
+                prefs[SharedPrefKeys.USER_ID.toString()] = data?.user?._id
+                prefs[SharedPrefKeys.USER_NAME.toString()] = data?.user?.full_name
+                prefs[SharedPrefKeys.USER_EMAIL.toString()] = data?.user?.email
+                prefs[SharedPrefKeys.USER_PICTURE.toString()] = data?.user?.profile_picture
+                (application as DoctorApplication).initDagger()
+                finish()
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    )
                 )
-            )
+            }
         }
     }
 
