@@ -15,7 +15,6 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/appointment_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
@@ -45,7 +44,6 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/back_from_parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -58,7 +56,7 @@
                     android:layout_marginHorizontal="4dp"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/poppins"
-                    android:text="In call with"
+                    android:text="Appointment details"
                     android:textColor="@color/colorBlack"
                     android:textSize="22sp" />
 
@@ -113,6 +111,66 @@
                             android:textColor="@color/colorDarkGrey"
                             android:textSize="14sp" />
 
+                        <TextView
+                            android:id="@+id/mp_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Medical problems"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_medical_problems"/>
+
+                        <TextView
+                            android:id="@+id/s_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Surgeries"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_surgeries"/>
+
+                        <TextView
+                            android:id="@+id/a_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Allergies"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_allergies"/>
+
+                        <TextView
+                            android:id="@+id/cm_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Current medication"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_current_medication"/>
+
+                        <TextView
+                            android:id="@+id/smoke_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Note: Patient is not an active smoker"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorBlack"
+                            android:fontFamily="@font/poppins"/>
 
                     </LinearLayout>
 
@@ -123,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="100dp"
                     app:cardBackgroundColor="@color/colorWhite"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="3dp">
@@ -139,9 +197,24 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
-                            android:text="Patient details"
+                            android:text="Symptoms"
                             android:textColor="@color/colorBlack"
                             android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{booking.symptoms.get(0).symptom}"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorBlack"
+                            android:fontFamily="@font/poppins"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_qna"/>
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -151,7 +224,6 @@
         </androidx.core.widget.NestedScrollView>
 
     </RelativeLayout>
-
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:elevation="5dp"

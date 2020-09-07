@@ -15,6 +15,7 @@ import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
 import ai.mindful.doctor.utils.ViewModelFactory
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -31,6 +32,8 @@ import io.shivamvk.networklibrary.model.banner.BannerResponse
 import io.shivamvk.networklibrary.models.BaseModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.imaginativeworld.whynotimagecarousel.CarouselItem
+import org.imaginativeworld.whynotimagecarousel.OnItemClickListener
+import java.net.URLEncoder
 import javax.inject.Inject
 
 
@@ -79,7 +82,7 @@ class HomeFragment : Fragment(), ApiManagerListener {
         ApiManager(
             ApiRoutes.getHomeBanners,
             apiService,
-            UtilModel(),
+            BannerResponse(),
             this,
             null
         ).doGETAPICall()
@@ -105,7 +108,7 @@ class HomeFragment : Fragment(), ApiManagerListener {
     }
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
-        if (dataModel is UtilModel) {
+        if (dataModel is BannerResponse) {
             var data = Gson().fromJson(response, BannerResponse::class.java).data
             carousel1List.clear()
             for (banner in data!!) {
@@ -116,6 +119,24 @@ class HomeFragment : Fragment(), ApiManagerListener {
                 )
             }
             binding.carousel1.addData(carousel1List)
+            binding.carousel1.onItemClickListener = object : OnItemClickListener{
+                override fun onClick(position: Int, carouselItem: CarouselItem) {
+                    if (data[position].weblink){
+                        var url = ""
+                        if (!data[position].url.startsWith("http")){
+                            url = "http://${data[position].url}"
+                        } else {
+                            url = data[position].url
+                        }
+                        startActivity(Intent(
+                            Intent.ACTION_VIEW
+                        ).setData
+                        (Uri.parse(url)))
+                    }
+                }
+                override fun onLongClick(position: Int, dataObject: CarouselItem) {}
+
+            }
         }
     }
 

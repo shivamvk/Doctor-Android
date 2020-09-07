@@ -21,7 +21,7 @@ import io.shivamvk.networklibrary.api.ApiService
 import java.lang.Exception
 import javax.inject.Inject
 
-class EditProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener,
+class EditProfileActivity : AppCompatActivity(),
     View.OnClickListener {
 
     @Inject
@@ -41,7 +41,6 @@ class EditProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedLis
         super.onCreate(savedInstanceState)
         (application as DoctorApplication).getDeps().inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
-        binding.profileAppBar.addOnOffsetChangedListener(this)
         viewmodel = ViewModelProviders.of(
             this,
             ViewModelFactory(apiService, this, prefs)
@@ -52,33 +51,7 @@ class EditProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedLis
         binding.aadharImage.setOnClickListener(this)
         binding.chequeImage.setOnClickListener(this)
         binding.profilePicture.setOnClickListener(this)
-    }
-
-    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-        try {
-            binding.profileCollapsingSection.setCollapsedTitleTextColor(
-                resources.getColor(
-                    R.color.colorWhite
-                )
-            )
-            if (scrollRange == -1) {
-                scrollRange = appBarLayout!!.totalScrollRange
-            }
-            Log.i("profile", "scroll $scrollRange, $verticalOffset")
-            if (scrollRange + verticalOffset - 500 < 0) {
-                Toast.makeText(this, "show", Toast.LENGTH_SHORT).show()
-                binding.profileCollapsingSection.title = "Edit profile"
-                binding.expandedToolbarContent.visibility = View.INVISIBLE
-                isShow = true
-            } else {
-                Toast.makeText(this, "hide", Toast.LENGTH_SHORT).show()
-                binding.profileCollapsingSection.title = ""
-                binding.expandedToolbarContent.visibility = View.VISIBLE
-                isShow = false
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        binding.back.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -102,6 +75,9 @@ class EditProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedLis
                 ImagePicker.with(this)
                     .crop(16f, 9f)
                     .start(CHEQUE_PICTURE_PICKER_CODE)
+            }
+            R.id.back -> {
+                onBackPressed()
             }
         }
     }

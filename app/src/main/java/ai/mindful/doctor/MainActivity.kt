@@ -3,6 +3,7 @@ package ai.mindful.doctor
 import ai.mindful.doctor.databinding.ActivityDrawerBinding
 import ai.mindful.doctor.di.DoctorApplication
 import ai.mindful.doctor.ui.fragment.*
+import ai.mindful.doctor.utils.ClientPrefs
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ResolveInfo
@@ -159,7 +160,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             type = "message/rfc822"
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("info@mindfulmachine.in"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(ClientPrefs.clientSupportEmail))
             putExtra(Intent.EXTRA_SUBJECT, "Help needed!")
         }
         startActivity(Intent.createChooser(intent, "Send an email using "));

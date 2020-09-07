@@ -16,16 +16,6 @@
         tools:context=".EditProfileActivity"
         android:background="@color/colorWhite">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorLightGrey"
-            android:fontFamily="@font/poppins"
-            android:onClick="@{()->viewmodel.backPressed()}"
-            android:text="Save changes" />
-
-
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
@@ -42,60 +32,32 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.google.android.material.appbar.AppBarLayout
-                        android:id="@+id/profile_app_bar"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clipChildren="false"
-                        app:elevation="0dp">
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="24dp"
+                        android:background="@color/colorPrimary">
 
-                        <com.google.android.material.appbar.CollapsingToolbarLayout
-                            android:id="@+id/profile_collapsing_section"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clipChildren="false"
-                            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_back"
+                            app:tint="@color/white"
+                            android:id="@+id/back"/>
 
-                            <LinearLayout
-                                android:id="@+id/expanded_toolbar_content"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="16dp"
-                                android:layout_marginTop="32dp"
-                                android:layout_marginBottom="16dp"
-                                android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edit profile"
+                            android:textSize="22sp"
+                            android:textColor="@color/colorWhite"
+                            android:fontFamily="@font/poppins"
+                            android:layout_marginTop="4dp"/>
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:onClick="@{()->viewmodel.backPressed()}"
-                                    android:src="@drawable/ic_back"
-                                    app:tint="@color/colorWhite" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    android:fontFamily="@font/poppins"
-                                    android:text="Edit profile"
-                                    android:textColor="@color/colorWhite"
-                                    android:textSize="22sp" />
-
-                            </LinearLayout>
-
-                            <androidx.appcompat.widget.Toolbar
-                                android:layout_width="match_parent"
-                                android:layout_height="?attr/actionBarSize"
-                                android:layout_above="@+id/button"
-                                android:layout_alignParentStart="true"
-                                android:gravity="top"
-                                android:minHeight="?android:attr/actionBarSize"
-                                app:elevation="0dp"
-                                app:titleTextColor="@color/colorWhite" />
-
-                        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                    </com.google.android.material.appbar.AppBarLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -256,6 +218,16 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginVertical="16dp"
+                            android:background="@color/colorLightGrey"
+                            android:fontFamily="@font/poppins"
+                            android:onClick="@{()->viewmodel.backPressed()}"
+                            android:text="Save profile" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -314,6 +286,16 @@
                             android:layout_height="250dp"
                             android:src="@drawable/image_placeholder" />
 
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginVertical="16dp"
+                            android:background="@color/colorLightGrey"
+                            android:fontFamily="@font/poppins"
+                            android:onClick="@{()->viewmodel.backPressed()}"
+                            android:text="Save documents" />
 
                     </LinearLayout>
 

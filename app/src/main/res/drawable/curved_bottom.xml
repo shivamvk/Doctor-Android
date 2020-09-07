@@ -10,7 +10,7 @@
         <shape android:shape="oval">
             <gradient
                 android:startColor="@color/colorPrimary"
-                android:endColor="#D15FEE"/>
+                android:endColor="@color/primaryLight"/>
         </shape>
     </item>
 </layer-list>

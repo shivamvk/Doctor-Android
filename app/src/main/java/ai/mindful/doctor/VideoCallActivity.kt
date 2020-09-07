@@ -2,6 +2,8 @@ package ai.mindful.doctor
 
 import ai.mindful.doctor.databinding.ActivityVideoCallBinding
 import ai.mindful.doctor.di.DoctorApplication
+import ai.mindful.doctor.ui.adapter.PillAdapter
+import ai.mindful.doctor.ui.adapter.QnaAdapter
 import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
@@ -17,6 +19,10 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.JsonObject
 import io.agora.rtc.IRtcEngineEventHandler
@@ -38,7 +44,6 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     RtmCallEventListener, ApiManagerListener {
 
     private val PERMISSION_ALL_REQUEST_CODE: Int = 672
-
     @Inject
     lateinit var prefs: SharedPreferences
     @Inject
@@ -51,6 +56,7 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     private var rtmCallManager: RtmCallManager? = null
     private var localInvitation: LocalInvitation? = null
     private var mediaPlayer: MediaPlayer? = null
+    lateinit var appointmentModel: AppointmentModel
     private val rtcEventHandler = object : IRtcEngineEventHandler() {
 
         // Listen for the onFirstRemoteVideoDecoded callback.
@@ -85,23 +91,69 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         } else {
             permissionGrantedInitEverything()
         }
-        if (checkSelfPermission(
-                Manifest.permission.RECORD_AUDIO,
-                PERMISSION_REQ_ID_RECORD_AUDIO
-            ) && checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA)
-        ) {
-            permissionGrantedInitEverything()
-        }
     }
 
     private fun permissionGrantedInitEverything() {
         initAgoraEngineAndJoinChannel()
         sendNotificationToPatient()
         binding.btnCall.setOnClickListener(this)
-        binding.backFromParent.setOnClickListener(this)
         binding.btnMute.setOnClickListener(this)
         binding.btnSwitchCamera.setOnClickListener(this)
-        binding.booking = intent.getSerializableExtra("appointmentModel") as AppointmentModel
+        appointmentModel = intent.getSerializableExtra("appointmentModel") as AppointmentModel
+        binding.booking = appointmentModel
+        setAppointmentDetailsUi()
+    }
+
+    private fun setAppointmentDetailsUi() {
+        var cmlm = FlexboxLayoutManager(this)
+        cmlm.flexDirection = FlexDirection.ROW
+        cmlm.justifyContent = JustifyContent.FLEX_START
+        binding.rvCurrentMedication.layoutManager = cmlm
+        binding.rvCurrentMedication.adapter =
+            appointmentModel.patient?.history?.currentMedication?.let { PillAdapter(this, it) }
+        if (appointmentModel.patient?.history?.currentMedication.isNullOrEmpty()){
+            binding.cmText.visibility = View.GONE
+        }
+
+        var alm = FlexboxLayoutManager(this)
+        alm.flexDirection = FlexDirection.ROW
+        alm.justifyContent = JustifyContent.FLEX_START
+        binding.rvAllergies.layoutManager = alm
+        binding.rvAllergies.adapter =
+            appointmentModel.patient?.history?.allergies?.let { PillAdapter(this, it) }
+        if (appointmentModel.patient?.history?.allergies.isNullOrEmpty()){
+            binding.aText.visibility = View.GONE
+        }
+
+        var slm = FlexboxLayoutManager(this)
+        slm.flexDirection = FlexDirection.ROW
+        slm.justifyContent = JustifyContent.FLEX_START
+        binding.rvSurgeries.layoutManager = slm
+        binding.rvSurgeries.adapter =
+            appointmentModel.patient?.history?.surgeries?.let { PillAdapter(this, it) }
+        if (appointmentModel.patient?.history?.surgeries.isNullOrEmpty()){
+            binding.sText.visibility = View.GONE
+        }
+
+        var mplm = FlexboxLayoutManager(this)
+        mplm.flexDirection = FlexDirection.ROW
+        mplm.justifyContent = JustifyContent.FLEX_START
+        binding.rvMedicalProblems.layoutManager = mplm
+        binding.rvMedicalProblems.adapter =
+            appointmentModel.patient?.history?.medicalProblems?.let { PillAdapter(this, it) }
+        if (appointmentModel.patient?.history?.medicalProblems.isNullOrEmpty()){
+            binding.mpText.visibility = View.GONE
+        }
+
+        if (appointmentModel.patient?.history?.smoking!!){
+            binding.smokeDetails.text = "Note: Is an active smoker? Yes"
+        } else {
+            binding.smokeDetails.text = "Note: Is an active smoker? No"
+        }
+
+        binding.rvQna.layoutManager = LinearLayoutManager(this)
+        binding.rvQna.adapter =
+            appointmentModel.symptoms?.get(0)?.questions?.let { QnaAdapter(this, it) }
     }
 
     fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
@@ -336,18 +388,18 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
                 binding.btnSwitchCamera.isSelected = !binding.btnSwitchCamera.isSelected
                 rtcEngine!!.switchCamera()
             }
-            R.id.back_from_parent -> {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("End call?")
-                    .setPositiveButton("End", DialogInterface.OnClickListener { dialog, _ ->
-                        dialog.cancel()
-                        finish()
-                    })
-                    .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, _ ->
-                        dialog.cancel()
-                    })
-                    .show()
-            }
+//            R.id.back_from_parent -> {
+//                MaterialAlertDialogBuilder(this)
+//                    .setTitle("End call?")
+//                    .setPositiveButton("End", DialogInterface.OnClickListener { dialog, _ ->
+//                        dialog.cancel()
+//                        finish()
+//                    })
+//                    .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, _ ->
+//                        dialog.cancel()
+//                    })
+//                    .show()
+//            }
         }
     }
 
