@@ -10,6 +10,9 @@ interface ApiService {
     @POST
     fun doPostApiCall(@Url url: String, @Body jsonObject: JsonObject): Observable<ResponseBody>
 
+    @PUT
+    fun doPutApiCall(@Url url: String, @Body jsonObject: JsonObject): Observable<ResponseBody>
+
     @GET
     fun doGetApiCall(@Url url: String): Observable<ResponseBody>
 

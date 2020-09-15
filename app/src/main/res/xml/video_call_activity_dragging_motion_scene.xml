@@ -6,12 +6,6 @@
         app:constraintSetStart="@id/expanded"
         app:constraintSetEnd="@id/collapsed">
 
-        <OnSwipe
-            app:dragDirection="dragDown"/>
-
-        <OnClick
-            app:targetId="@id/back"/>
-
     </Transition>
 
     <ConstraintSet android:id="@+id/expanded">

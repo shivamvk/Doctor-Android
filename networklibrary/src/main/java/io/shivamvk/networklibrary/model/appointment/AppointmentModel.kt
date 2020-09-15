@@ -11,5 +11,6 @@ data class AppointmentModel(
     val createdBy: UserModel? = null,
     val patient: PatientModel? = null,
     val language: LanguageModel? = null,
-    val symptoms: List<SymptomModel>? = null
+    val symptoms: List<SymptomModel>? = null,
+    var templateType: String = ""
 ): BaseModel, Serializable

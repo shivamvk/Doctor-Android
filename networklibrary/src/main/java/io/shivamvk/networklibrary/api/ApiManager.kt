@@ -44,6 +44,31 @@ class ApiManager
             })
     }
 
+    fun doPUTAPICall(jsonObject: JsonObject) {
+        if (customProgressDialog != null)
+            customProgressDialog?.show()
+        apiService.doPutApiCall(mUrl, jsonObject)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<ResponseBody>() {
+                override fun onCompleted() {
+                }
+
+                override fun onError(e: Throwable) {
+                    customProgressDialog?.dismiss()
+                    apiListener.onFailure(dataModel, e)
+                }
+
+                override fun onNext(responseBody: ResponseBody?) {
+                    customProgressDialog?.dismiss()
+                    if (responseBody == null) {
+                        return
+                    }
+                    apiListener.onSuccess(dataModel, responseBody.string());
+                }
+            })
+    }
+
     fun doPostAPIMultiPartCall(params: List<MultipartBody.Part>){
         if (customProgressDialog != null)
             customProgressDialog?.show()

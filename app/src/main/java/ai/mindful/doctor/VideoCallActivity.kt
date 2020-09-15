@@ -2,28 +2,22 @@ package ai.mindful.doctor
 
 import ai.mindful.doctor.databinding.ActivityVideoCallBinding
 import ai.mindful.doctor.di.DoctorApplication
-import ai.mindful.doctor.ui.adapter.PillAdapter
-import ai.mindful.doctor.ui.adapter.QnaAdapter
+import ai.mindful.doctor.ui.bottomsheet.TemplateBottomSheet
 import android.Manifest
 import android.content.Context
-import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.agora.rtc.IRtcEngineEventHandler
 import io.agora.rtc.RtcEngine
@@ -35,6 +29,9 @@ import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
 import io.shivamvk.networklibrary.model.UtilModel
 import io.shivamvk.networklibrary.model.appointment.AppointmentModel
+import io.shivamvk.networklibrary.model.appointment.TemplateExamResponse
+import io.shivamvk.networklibrary.model.appointment.TemplateModel
+import io.shivamvk.networklibrary.model.appointment.TemplateRosResponse
 import io.shivamvk.networklibrary.models.BaseModel
 import io.shivamvk.networklibrary.sharedprefs.SharedPrefKeys
 import io.shivamvk.networklibrary.sharedprefs.PreferencesHelper.get
@@ -57,6 +54,9 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     private var localInvitation: LocalInvitation? = null
     private var mediaPlayer: MediaPlayer? = null
     lateinit var appointmentModel: AppointmentModel
+    lateinit var templateBottomSheet: TemplateBottomSheet
+    var rosList = ArrayList<TemplateModel>()
+    var examList = ArrayList<TemplateModel>()
     private val rtcEventHandler = object : IRtcEngineEventHandler() {
 
         // Listen for the onFirstRemoteVideoDecoded callback.
@@ -101,59 +101,27 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         binding.btnSwitchCamera.setOnClickListener(this)
         appointmentModel = intent.getSerializableExtra("appointmentModel") as AppointmentModel
         binding.booking = appointmentModel
-        setAppointmentDetailsUi()
-    }
-
-    private fun setAppointmentDetailsUi() {
-        var cmlm = FlexboxLayoutManager(this)
-        cmlm.flexDirection = FlexDirection.ROW
-        cmlm.justifyContent = JustifyContent.FLEX_START
-        binding.rvCurrentMedication.layoutManager = cmlm
-        binding.rvCurrentMedication.adapter =
-            appointmentModel.patient?.history?.currentMedication?.let { PillAdapter(this, it) }
-        if (appointmentModel.patient?.history?.currentMedication.isNullOrEmpty()){
-            binding.cmText.visibility = View.GONE
+        ApiManager(
+            ApiRoutes.templateRosTypes,
+            apiService,
+            TemplateRosResponse(),
+            this,
+            null
+        ).doGETAPICall()
+        ApiManager(
+            ApiRoutes.templateExamTypes,
+            apiService,
+            TemplateExamResponse(),
+            this,
+            null
+        ).doGETAPICall()
+        binding.remoteVideoViewContainer.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP){
+                if (templateBottomSheet != null)
+                    templateBottomSheet.show(supportFragmentManager, "templates")
+            }
+            true
         }
-
-        var alm = FlexboxLayoutManager(this)
-        alm.flexDirection = FlexDirection.ROW
-        alm.justifyContent = JustifyContent.FLEX_START
-        binding.rvAllergies.layoutManager = alm
-        binding.rvAllergies.adapter =
-            appointmentModel.patient?.history?.allergies?.let { PillAdapter(this, it) }
-        if (appointmentModel.patient?.history?.allergies.isNullOrEmpty()){
-            binding.aText.visibility = View.GONE
-        }
-
-        var slm = FlexboxLayoutManager(this)
-        slm.flexDirection = FlexDirection.ROW
-        slm.justifyContent = JustifyContent.FLEX_START
-        binding.rvSurgeries.layoutManager = slm
-        binding.rvSurgeries.adapter =
-            appointmentModel.patient?.history?.surgeries?.let { PillAdapter(this, it) }
-        if (appointmentModel.patient?.history?.surgeries.isNullOrEmpty()){
-            binding.sText.visibility = View.GONE
-        }
-
-        var mplm = FlexboxLayoutManager(this)
-        mplm.flexDirection = FlexDirection.ROW
-        mplm.justifyContent = JustifyContent.FLEX_START
-        binding.rvMedicalProblems.layoutManager = mplm
-        binding.rvMedicalProblems.adapter =
-            appointmentModel.patient?.history?.medicalProblems?.let { PillAdapter(this, it) }
-        if (appointmentModel.patient?.history?.medicalProblems.isNullOrEmpty()){
-            binding.mpText.visibility = View.GONE
-        }
-
-        if (appointmentModel.patient?.history?.smoking!!){
-            binding.smokeDetails.text = "Note: Is an active smoker? Yes"
-        } else {
-            binding.smokeDetails.text = "Note: Is an active smoker? No"
-        }
-
-        binding.rvQna.layoutManager = LinearLayoutManager(this)
-        binding.rvQna.adapter =
-            appointmentModel.symptoms?.get(0)?.questions?.let { QnaAdapter(this, it) }
     }
 
     fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
@@ -404,7 +372,20 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     }
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
-        Log.i("videoCall", response)
+        when(dataModel){
+            is TemplateRosResponse -> {
+                rosList = Gson().fromJson(response, TemplateRosResponse::class.java).data
+                if (examList.isNotEmpty()){
+                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList)
+                }
+            }
+            is TemplateExamResponse -> {
+                examList = Gson().fromJson(response, TemplateExamResponse::class.java).data
+                if (examList.isNotEmpty()){
+                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList)
+                }
+            }
+        }
     }
 
     override fun onFailure(dataModel: BaseModel?, e: Throwable) {

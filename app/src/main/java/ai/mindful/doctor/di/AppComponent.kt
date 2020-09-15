@@ -1,6 +1,7 @@
 package ai.mindful.doctor.di
 
 import ai.mindful.doctor.*
+import ai.mindful.doctor.ui.bottomsheet.NewTicketBottomSheet
 import ai.mindful.doctor.ui.fragment.AppointmentFragment
 import ai.mindful.doctor.ui.fragment.HomeFragment
 import dagger.Component
@@ -18,5 +19,8 @@ interface AppComponent {
     fun inject(activity: VideoCallActivity)
     fun inject(fragment: AppointmentFragment)
     fun inject(activity: OnboardingActivity)
+    fun inject(activity: CSTicketActivity)
+    fun inject(bottomSheet: NewTicketBottomSheet)
+    fun inject(activity: CSChatActivity)
     //create fun inject() for all the activities, fragments etc using dagger
 }

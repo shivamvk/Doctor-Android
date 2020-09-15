@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="comment"
+            type="io.shivamvk.networklibrary.model.ticket.CommentModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:id="@+id/layout"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            app:cardElevation="0dp"
+            android:layout_marginVertical="4dp"
+            app:cardCornerRadius="5dp"
+            android:background="@drawable/message_bg_send">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Message"
+                        android:layout_marginHorizontal="32dp"
+                        android:layout_marginVertical="4dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins"
+                        android:id="@+id/message"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            ticketDateFromISO="@{comment.at}"
+                            android:id="@+id/time"
+                            android:textColor="@color/white"
+                            android:textSize="8sp"
+                            android:fontFamily="@font/poppins"/>
+
+                        <ImageView
+                            android:id="@+id/status"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:src="@drawable/ic_check"
+                            app:tint="@color/colorLightGrey"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</layout>

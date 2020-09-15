@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_support -> {
                 startActivity(Intent(
                     this,
-                    ChatActivity::class.java
+                    CSTicketActivity::class.java
                 ))
             }
             R.id.nav_tnc -> {
@@ -129,6 +129,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         prefs[SharedPrefKeys.USER_TOKEN.toString()] = ""
         prefs[SharedPrefKeys.USER_ID.toString()] = ""
         prefs[SharedPrefKeys.USER_PICTURE.toString()] = ""
+        prefs[SharedPrefKeys.FCM_TOKEN.toString()] = ""
         finish()
         startActivity(Intent(
             this,

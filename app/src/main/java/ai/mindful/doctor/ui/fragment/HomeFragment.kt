@@ -12,10 +12,16 @@ import ai.mindful.doctor.VideoCallActivity
 import ai.mindful.doctor.databinding.FragmentHomeBinding
 import ai.mindful.doctor.di.DoctorApplication
 import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
+import ai.mindful.doctor.utils.ReminderBroadcastReceiver
 import ai.mindful.doctor.utils.ViewModelFactory
+import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -34,6 +40,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.imaginativeworld.whynotimagecarousel.CarouselItem
 import org.imaginativeworld.whynotimagecarousel.OnItemClickListener
 import java.net.URLEncoder
+import java.util.*
 import javax.inject.Inject
 
 
@@ -88,6 +95,7 @@ class HomeFragment : Fragment(), ApiManagerListener {
         ).doGETAPICall()
         binding.activeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
+                startTimer()
                 Snackbar.make(active_switch, "You are now marked active!", Snackbar.LENGTH_SHORT)
                     .setAction("Close") {}
                     .show()
@@ -105,6 +113,19 @@ class HomeFragment : Fragment(), ApiManagerListener {
                 )
             )
         }
+    }
+
+    private fun startTimer() {
+        var alarmIntent = Intent(context, ReminderBroadcastReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(context, 0, intent, 0)
+        }
+        var am = context?.getSystemService(Activity.ALARM_SERVICE) as AlarmManager
+        am.set(
+            AlarmManager.RTC_WAKEUP,
+            Date().time + 5000,
+            alarmIntent
+        )
+        Log.i("alarm", "set")
     }
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {

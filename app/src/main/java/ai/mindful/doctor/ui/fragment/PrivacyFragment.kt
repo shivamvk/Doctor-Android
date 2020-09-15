@@ -3,6 +3,7 @@ package ai.mindful.doctor.ui.fragment
 import ai.mindful.doctor.R
 import ai.mindful.doctor.databinding.FragmentPrivacyBinding
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,5 +27,6 @@ class PrivacyFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.text.text = Html.fromHtml(getString(R.string.eazemeup_pp))
     }
 }

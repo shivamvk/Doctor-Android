@@ -24,4 +24,24 @@ object CustomBindingAdapters {
         val day = SimpleDateFormat("EEEE").format(date)
         textview.setText("${day}, ${month}")
     }
+
+    @JvmStatic
+    @BindingAdapter("ticketDateFromISO")
+    fun setTicketDateFromIso(textView: TextView, string: String){
+        val iso = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val date: Date? = gmtToLocalDate(iso.parse(string))
+        val month = SimpleDateFormat("dd MMM").format(date)
+        val day = SimpleDateFormat("hh:mm aa").format(date)
+        textView.setText("${month}, ${day}")
+    }
+
+    @JvmStatic
+    @BindingAdapter("restrictLengthTo25")
+    fun restrictLengthTo25(textView: TextView, string: String){
+        if (string.length < 25){
+            textView.text = string
+            return
+        }
+        textView.text = "${string.substring(0, 25)}..."
+    }
 }
