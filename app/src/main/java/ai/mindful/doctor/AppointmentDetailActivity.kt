@@ -3,6 +3,7 @@ package ai.mindful.doctor
 import ai.mindful.doctor.databinding.ActivityAppointmentDetailBinding
 import ai.mindful.doctor.ui.adapter.PillAdapter
 import ai.mindful.doctor.ui.adapter.QnaAdapter
+import ai.mindful.doctor.ui.bottomsheet.CancelOrderBottomSheet
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,6 +33,17 @@ class AppointmentDetailActivity : AppCompatActivity() {
                 this, VideoCallActivity::class.java
             ).putExtra("calleeId", appointmentModel.createdBy?._id)
                 .putExtra("appointmentModel", appointmentModel))
+        }
+        if (appointmentModel.status == "Cancelled by doctor"
+            || appointmentModel.status == "Cancelled by patient"
+            || appointmentModel.status == "Cancelled by admin"){
+            binding.cancelCallSection.visibility = View.GONE
+            binding.cancellationReason.visibility = View.VISIBLE
+            binding.cancellationReason.text = "${appointmentModel.status}\n${appointmentModel.cancellationReason}"
+        }
+        binding.cancel.setOnClickListener {
+            var cbs = CancelOrderBottomSheet(appointmentModel._id)
+            cbs.show(supportFragmentManager, "Cancel order")
         }
 
         var cmlm = FlexboxLayoutManager(this)
@@ -75,13 +87,19 @@ class AppointmentDetailActivity : AppCompatActivity() {
         }
 
         if (appointmentModel.patient?.history?.smoking!!){
-            binding.smokeDetails.text = "Note: Is an active smoker? Yes"
+            binding.smokeDetails.text = "Social history: Is an active smoker? Yes"
         } else {
-            binding.smokeDetails.text = "Note: Is an active smoker? No"
+            binding.smokeDetails.text = "Social history: Is an active smoker? No"
         }
 
         binding.rvQna.layoutManager = LinearLayoutManager(this)
         binding.rvQna.adapter =
             appointmentModel.symptoms?.get(0)?.questions?.let { QnaAdapter(this, it) }
+    }
+
+    fun cancelOrder() {
+        binding.cancelCallSection.visibility = View.GONE
+        binding.cancellationReason.visibility = View.VISIBLE
+        binding.cancellationReason.text = "Cancelled"
     }
 }

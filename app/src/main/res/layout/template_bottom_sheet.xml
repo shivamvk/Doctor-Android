@@ -87,7 +87,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
-                            android:text="Medical problems"
+                            android:text="Past medical problems"
                             android:textSize="14sp" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -243,6 +243,15 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/rv_ros"/>
 
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Any additional findings?"
+                            android:textColorHint="#a7a7a7"
+                            android:textColor="@color/colorBlack"
+                            android:background="@color/colorWhite"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -257,8 +266,28 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/rv_physical_exam"/>
 
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Any additional findings?"
+                            android:textColorHint="#a7a7a7"
+                            android:textColor="@color/colorBlack"
+                            android:background="@color/colorWhite"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Submit and close"
+                    android:layout_margin="16dp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/poppins"
+                    android:id="@+id/save"/>
 
             </LinearLayout>
 

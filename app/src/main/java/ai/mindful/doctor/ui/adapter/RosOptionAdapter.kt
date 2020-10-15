@@ -5,13 +5,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import io.shivamvk.networklibrary.model.appointment.OptionsModel
 
-class RosOptionAdapter(val context: Context, val data: List<OptionsModel>): RecyclerView.Adapter<RosOptionAdapter.ViewHolder>() {
+class RosOptionAdapter(val context: Context, val data: ArrayList<String>): RecyclerView.Adapter<RosOptionAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: RosOptionItemLayoutBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(
-            optionsModel: OptionsModel,
+            optionsModel: String,
             context: Context
         ){
             binding.option = optionsModel

@@ -34,11 +34,10 @@ class CSTicketActivity : AppCompatActivity(), ApiManagerListener {
         super.onCreate(savedInstanceState)
         (application as DoctorApplication).getDeps().inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_c_s_ticket)
-
-        binding.addNewTicket.setOnClickListener {
-            var newTicketBS = NewTicketBottomSheet()
-            newTicketBS.show(supportFragmentManager, "New Ticket")
-        }
+        supportActionBar?.hide()
+//        binding.addNewTicket.setOnClickListener {
+//
+//        }
 
         binding.back.setOnClickListener {
             onBackPressed()
@@ -51,6 +50,12 @@ class CSTicketActivity : AppCompatActivity(), ApiManagerListener {
             this,
             null
         ).doGETAPICall()
+    }
+
+    fun addnewTicket(view: View){
+        var newTicketBS = NewTicketBottomSheet()
+        newTicketBS.show(supportFragmentManager, "New Ticket")
+//        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
     }
 
     fun setUpTickets(){

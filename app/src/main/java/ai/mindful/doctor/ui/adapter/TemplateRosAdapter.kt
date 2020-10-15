@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.shivamvk.networklibrary.model.appointment.RosExamBookingPutModel
 import io.shivamvk.networklibrary.model.appointment.TemplateModel
 
-class TemplateRosAdapter(val context: Context, val data: List<TemplateModel>) :
+class TemplateRosAdapter(
+    val context: Context,
+    val data: List<TemplateModel>,
+    rosExamBookingPutModel: RosExamBookingPutModel
+) :
     RecyclerView.Adapter<TemplateRosAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: TemplateRosItemLayoutBinding) :
@@ -19,7 +24,7 @@ class TemplateRosAdapter(val context: Context, val data: List<TemplateModel>) :
         ) {
             binding.template = templateModel
             binding.rvOptions.layoutManager = LinearLayoutManager(context)
-            binding.rvOptions.adapter = RosOptionAdapter(context, templateModel.options)
+            binding.rvOptions.adapter = RosOptionAdapter(context, templateModel.answers)
         }
     }
 

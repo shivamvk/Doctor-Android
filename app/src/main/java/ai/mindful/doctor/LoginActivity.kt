@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -59,6 +60,13 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
         binding.lifecycleOwner = this
         setUpObservers()
         setUpTextWatchers()
+        binding.forgotPassword.setOnClickListener {
+            startActivity(
+                Intent(
+                    this, FPEnterEmailActivity::class.java
+                )
+            )
+        }
     }
 
     fun setUpObservers() {
@@ -129,7 +137,7 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
             var jsonObject = JsonObject()
             jsonObject.addProperty("full_name", et_name.editText?.text.toString())
             jsonObject.addProperty("email", et_email.editText?.text.toString())
-            jsonObject.addProperty("password", et_password.editText?.textAlignment.toString())
+            jsonObject.addProperty("password", et_password.editText?.text.toString())
             ApiManager(
                 ApiRoutes.signup,
                 apiService,
@@ -216,12 +224,14 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
     override fun onSuccess(dataModel: BaseModel?, response: String) {
         if (dataModel is AuthResponse) {
             var model = Gson().fromJson(response, AuthResponse::class.java)
+            Log.i("response login", response)
             if (model.errors){
                 Toast.makeText(this, model.message, Toast.LENGTH_SHORT).show()
                 viewModel.loading.postValue(false)
             } else {
                 var data = model.data
                 prefs[SharedPrefKeys.USER_TOKEN.toString()] = data?.token
+                Log.i("token####", prefs[SharedPrefKeys.USER_TOKEN.toString(), ""] + "####")
                 prefs[SharedPrefKeys.USER_ID.toString()] = data?.user?._id
                 prefs[SharedPrefKeys.USER_NAME.toString()] = data?.user?.full_name
                 prefs[SharedPrefKeys.USER_EMAIL.toString()] = data?.user?.email

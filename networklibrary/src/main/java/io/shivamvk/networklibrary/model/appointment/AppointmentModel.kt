@@ -12,5 +12,7 @@ data class AppointmentModel(
     val patient: PatientModel? = null,
     val language: LanguageModel? = null,
     val symptoms: List<SymptomModel>? = null,
-    var templateType: String = ""
+    var templateType: String = "",
+    var status: String? = "",
+    var cancellationReason: String? = ""
 ): BaseModel, Serializable

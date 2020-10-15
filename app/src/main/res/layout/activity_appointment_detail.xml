@@ -15,16 +15,41 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
-        <Button
-            android:id="@+id/call"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorLightGrey"
-            android:fontFamily="@font/poppins"
-            android:text="Call patient"
-            android:textAllCaps="false"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:elevation="5dp"
+            android:id="@+id/cancel_call_section"
+            android:visibility="visible"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorLightGrey"
+                android:fontFamily="@font/poppins"
+                android:text="Cancel order"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/call"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@color/primaryLight"
+                android:fontFamily="@font/poppins"
+                android:text="Call patient"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/layout"
@@ -113,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
-                            android:text="Medical problems"
+                            android:text="Past medical problems"
                             android:textSize="14sp" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -178,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="100dp"
+                    android:layout_marginBottom="70dp"
                     app:cardBackgroundColor="@color/colorWhite"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="3dp">
@@ -215,6 +240,19 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CAncelled"
+                    android:textColor="@color/flat_red_1"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginHorizontal="32dp"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/cancellation_reason"
+                    android:fontFamily="@font/poppins"/>
 
             </LinearLayout>
 

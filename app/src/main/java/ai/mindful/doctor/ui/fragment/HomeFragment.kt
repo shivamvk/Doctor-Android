@@ -11,6 +11,7 @@ import ai.mindful.doctor.R
 import ai.mindful.doctor.VideoCallActivity
 import ai.mindful.doctor.databinding.FragmentHomeBinding
 import ai.mindful.doctor.di.DoctorApplication
+import ai.mindful.doctor.ui.adapter.AppointmentAdapter
 import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
 import ai.mindful.doctor.utils.ReminderBroadcastReceiver
 import ai.mindful.doctor.utils.ViewModelFactory
@@ -26,14 +27,17 @@ import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.shivamvk.networklibrary.BuildConfig
 import io.shivamvk.networklibrary.api.ApiManager
 import io.shivamvk.networklibrary.api.ApiManagerListener
 import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
 import io.shivamvk.networklibrary.model.UtilModel
+import io.shivamvk.networklibrary.model.appointment.AppointmentResponse
 import io.shivamvk.networklibrary.model.banner.BannerResponse
 import io.shivamvk.networklibrary.models.BaseModel
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -93,9 +97,25 @@ class HomeFragment : Fragment(), ApiManagerListener {
             this,
             null
         ).doGETAPICall()
+        ApiManager(
+            ApiRoutes.upcomingBooking,
+            apiService,
+            AppointmentResponse(),
+            this,
+            null
+        ).doGETAPICall()
         binding.activeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 startTimer()
+                ApiManager(
+                    ApiRoutes.toggleAvailable,
+                    apiService,
+                    UtilModel(),
+                    this,
+                    null
+                ).doPUTAPICall(JsonObject().apply {
+                    addProperty("available", true)
+                })
                 Snackbar.make(active_switch, "You are now marked active!", Snackbar.LENGTH_SHORT)
                     .setAction("Close") {}
                     .show()
@@ -103,6 +123,15 @@ class HomeFragment : Fragment(), ApiManagerListener {
                 Snackbar.make(active_switch, "You are now marked inactive!", Snackbar.LENGTH_SHORT)
                     .setAction("Close") {}
                     .show()
+                ApiManager(
+                    ApiRoutes.toggleAvailable,
+                    apiService,
+                    UtilModel(),
+                    this,
+                    null
+                ).doPUTAPICall(JsonObject().apply {
+                    addProperty("available", false)
+                })
             }
         }
         binding.call.setOnClickListener {
@@ -156,7 +185,13 @@ class HomeFragment : Fragment(), ApiManagerListener {
                     }
                 }
                 override fun onLongClick(position: Int, dataObject: CarouselItem) {}
-
+            }
+        } else if (dataModel is AppointmentResponse){
+            var model = Gson().fromJson(response, AppointmentResponse::class.java).data
+            if (model?.isNotEmpty()!!){
+                binding.upcomingBookingSection.visibility = View.VISIBLE
+                binding.rvAppointments.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                binding.rvAppointments.adapter = context?.let { AppointmentAdapter(it, model) }
             }
         }
     }

@@ -21,13 +21,15 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.shivamvk.networklibrary.model.appointment.AppointmentModel
+import io.shivamvk.networklibrary.model.appointment.RosExamBookingPutModel
 import io.shivamvk.networklibrary.model.appointment.TemplateModel
 
 
 class TemplateBottomSheet(
     val appointmentModel: AppointmentModel,
     val rosList: ArrayList<TemplateModel>,
-    val examList: ArrayList<TemplateModel>
+    val examList: ArrayList<TemplateModel>,
+    var rosExamBookingPutModel: RosExamBookingPutModel
 ): BottomSheetDialogFragment() {
 
     lateinit var binding: TemplateBottomSheetBinding
@@ -79,9 +81,9 @@ class TemplateBottomSheet(
         }
 
         if (appointmentModel.patient?.history?.smoking!!){
-            binding.smokeDetails.text = "Note: Is an active smoker? Yes"
+            binding.smokeDetails.text = "Social history: Is an active smoker? Yes"
         } else {
-            binding.smokeDetails.text = "Note: Is an active smoker? No"
+            binding.smokeDetails.text = "Social history: Is an active smoker? No"
         }
 
         binding.rvQna.layoutManager = LinearLayoutManager(context)
@@ -99,10 +101,14 @@ class TemplateBottomSheet(
         }
         binding.templateType.visibility = View.GONE
         binding.rvPhysicalExam.layoutManager = LinearLayoutManager(context)
-        binding.rvPhysicalExam.adapter = TemplateExamAdapter(context!!, examList)
+        binding.rvPhysicalExam.adapter = TemplateExamAdapter(context!!, examList, rosExamBookingPutModel)
 
         binding.rvRos.layoutManager = LinearLayoutManager(context)
-        binding.rvRos.adapter = TemplateRosAdapter(context!!, rosList)
+        binding.rvRos.adapter = TemplateRosAdapter(context!!, rosList, rosExamBookingPutModel)
+
+        binding.save.setOnClickListener {
+            this.dismiss()
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

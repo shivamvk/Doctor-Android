@@ -1,6 +1,7 @@
 package ai.mindful.doctor.di
 
 import ai.mindful.doctor.*
+import ai.mindful.doctor.ui.bottomsheet.CancelOrderBottomSheet
 import ai.mindful.doctor.ui.bottomsheet.NewTicketBottomSheet
 import ai.mindful.doctor.ui.fragment.AppointmentFragment
 import ai.mindful.doctor.ui.fragment.HomeFragment
@@ -22,5 +23,10 @@ interface AppComponent {
     fun inject(activity: CSTicketActivity)
     fun inject(bottomSheet: NewTicketBottomSheet)
     fun inject(activity: CSChatActivity)
+    fun inject(activity: ULEditProfileActivity)
+    fun inject(bottomSheet: CancelOrderBottomSheet)
+    fun inject(activity: FPEnterEmailActivity)
+    fun inject(activity: FPEnterOtpActivity)
+    fun inject(activity: FPResetPasswordActivity)
     //create fun inject() for all the activities, fragments etc using dagger
 }

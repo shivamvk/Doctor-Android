@@ -9,6 +9,9 @@
         <variable
             name="viewmodel"
             type="ai.mindful.doctor.ui.viewmodel.LoginActivityViewModel" />
+        <variable
+            name="clientprefs"
+            type="ai.mindful.doctor.utils.ClientPrefs" />
     </data>
 
     <RelativeLayout
@@ -52,6 +55,19 @@
             android:textColor="@color/colorDarkGrey"
             android:gravity="center_horizontal"
             android:text="By clicking continue you agree to our terms\nand conditions and privacy policy"/>
+
+        <TextView
+            android:visibility="@{viewmodel.isLoginView? View.VISIBLE: View.GONE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:layout_above="@id/footer"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:textSize="16sp"
+            android:id="@+id/forgot_password"
+            android:fontFamily="@font/poppins"/>
 
         <LinearLayout
             android:layout_width="match_parent"

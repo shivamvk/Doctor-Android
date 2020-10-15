@@ -22,7 +22,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CSChatActivity"></activity>
+        <activity android:name=".TakeNoteActivity"></activity>
+        <activity android:name=".FPResetPasswordActivity" />
+        <activity android:name=".FPEnterOtpActivity" />
+        <activity android:name=".FPEnterEmailActivity" />
+        <activity android:name=".ULEditProfileActivity" />
+        <activity android:name=".CSChatActivity" />
         <activity android:name=".CSTicketActivity" />
         <activity
             android:name=".OnboardingActivity"
@@ -57,8 +62,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <receiver android:name="ai.mindful.doctor.utils.ReminderBroadcastReceiver" >
-        </receiver>
+
+        <receiver android:name=".utils.ReminderBroadcastReceiver" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

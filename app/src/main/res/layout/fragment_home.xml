@@ -73,6 +73,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/upcoming_booking_section"
+                    android:layout_marginVertical="12dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Call request"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="8dp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rv_appointments"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:orientation="horizontal"
                     android:visibility="visible">
@@ -151,7 +176,7 @@
                                 android:layout_gravity="center_horizontal"
                                 app:lottie_autoPlay="true"
                                 app:lottie_loop="false"
-                                app:lottie_rawRes="@raw/appointment_anim" />
+                                app:lottie_rawRes="@raw/profile_anim" />
 
                         </LinearLayout>
 
@@ -200,7 +225,7 @@
                                 android:layout_gravity="center_horizontal"
                                 app:lottie_autoPlay="true"
                                 app:lottie_loop="false"
-                                app:lottie_rawRes="@raw/appointment_anim" />
+                                app:lottie_rawRes="@raw/wallet" />
 
                         </LinearLayout>
 
@@ -240,7 +265,7 @@
                                 android:layout_gravity="center_horizontal"
                                 app:lottie_autoPlay="true"
                                 app:lottie_loop="false"
-                                app:lottie_rawRes="@raw/appointment_anim" />
+                                app:lottie_rawRes="@raw/email_anim" />
 
                         </LinearLayout>
 

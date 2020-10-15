@@ -33,13 +33,6 @@ class AppointmentFragment: Fragment(), ApiManagerListener {
 
     fun init(){
         binding.rvAppointments.layoutManager = LinearLayoutManager(context)
-        ApiManager(
-            ApiRoutes.getAppointments,
-            apiService,
-            AppointmentResponse(),
-            this,
-            null
-        ).doGETAPICall()
     }
 
     override fun onCreateView(
@@ -57,6 +50,18 @@ class AppointmentFragment: Fragment(), ApiManagerListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("resume", "appointment")
+        ApiManager(
+            ApiRoutes.getAppointments,
+            apiService,
+            AppointmentResponse(),
+            this,
+            null
+        ).doGETAPICall()
     }
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {

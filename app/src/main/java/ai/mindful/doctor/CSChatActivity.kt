@@ -35,6 +35,7 @@ class CSChatActivity : AppCompatActivity(), ApiManagerListener, TextWatcher {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         (application as DoctorApplication).getDeps().inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_c_s_chat)
         ticketModel = intent.getSerializableExtra("ticket") as TicketModel
@@ -78,7 +79,7 @@ class CSChatActivity : AppCompatActivity(), ApiManagerListener, TextWatcher {
             onBackPressed()
         }
         binding.rvMessages.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
-            if (bottom<oldBottom){
+            if (bottom<oldBottom && binding.rvMessages.adapter != null){
                 binding.rvMessages.postDelayed(Runnable {
                     binding.rvMessages.smoothScrollToPosition(
                         (binding.rvMessages.adapter as CSMessagesAdapter).itemCount

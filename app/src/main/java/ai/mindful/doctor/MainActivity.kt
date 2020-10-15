@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.util.Util
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.shivamvk.networklibrary.BuildConfig
 import io.shivamvk.networklibrary.api.ApiManager
@@ -28,6 +30,9 @@ import io.shivamvk.networklibrary.api.ApiManagerListener
 import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
 import io.shivamvk.networklibrary.model.UtilModel
+import io.shivamvk.networklibrary.model.UtilModelArray
+import io.shivamvk.networklibrary.model.profile.ProfileResponse
+import io.shivamvk.networklibrary.model.profile.User
 import io.shivamvk.networklibrary.models.BaseModel
 import io.shivamvk.networklibrary.sharedprefs.PreferencesHelper.get
 import io.shivamvk.networklibrary.sharedprefs.PreferencesHelper.set
@@ -35,11 +40,14 @@ import io.shivamvk.networklibrary.sharedprefs.SharedPrefKeys
 import kotlinx.android.synthetic.main.nav_header_layout.view.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ApiManagerListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    ApiManagerListener {
 
     private var doubleBackPressedOnce: Boolean = false
-    @Inject lateinit var apiService: ApiService
-    @Inject lateinit var prefs: SharedPreferences
+    @Inject
+    lateinit var apiService: ApiService
+    @Inject
+    lateinit var prefs: SharedPreferences
     lateinit var binding: ActivityDrawerBinding
     lateinit var homeFragment: HomeFragment
     lateinit var fcmToken: String
@@ -62,9 +70,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.addDrawerListener(toggle)
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.getHeaderView(0).setOnClickListener {
-            startActivity(Intent(
-                this, EditProfileActivity::class.java
-            ))
+            if (ClientPrefs.isEazemeupClient) {
+                startActivity(
+                    Intent(
+                        this, EditProfileActivity::class.java
+                    )
+                )
+            } else {
+                startActivity(
+                    Intent(
+                        this, ULEditProfileActivity::class.java
+                    )
+                )
+            }
         }
         if (prefs[SharedPrefKeys.FCM_TOKEN.toString(), ""].isNullOrEmpty()) {
             registerFcm()
@@ -72,25 +90,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         homeFragment = HomeFragment()
         goto(homeFragment)
+        if (!ClientPrefs.isEazemeupClient){
+            ApiManager(
+                ApiRoutes.getProfile,
+                apiService,
+                UtilModelArray(),
+                this,
+                null
+            ).doGETAPICall()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        binding.navView.getHeaderView(0).uname?.text = prefs[SharedPrefKeys.USER_NAME.toString(), ""]
-        binding.navView.getHeaderView(0).uphone?.text = prefs[SharedPrefKeys.USER_EMAIL.toString(), ""]
+        binding.navView.getHeaderView(0).uname?.text =
+            prefs[SharedPrefKeys.USER_NAME.toString(), ""]
+        binding.navView.getHeaderView(0).uphone?.text =
+            prefs[SharedPrefKeys.USER_EMAIL.toString(), ""]
         Glide.with(this)
             .load(BuildConfig.AWSURL + prefs[SharedPrefKeys.USER_PICTURE.toString(), ""])
             .error(R.drawable.ic_user)
             .into(binding.navView.getHeaderView(0).userthumbimage)
     }
 
-    fun goto(fragment: Fragment){
+    fun goto(fragment: Fragment) {
         var transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment).commit()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.nav_home -> {
                 goto(homeFragment)
             }
@@ -101,10 +130,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 goto(WalletFragment())
             }
             R.id.nav_support -> {
-                startActivity(Intent(
-                    this,
-                    CSTicketActivity::class.java
-                ))
+                startActivity(
+                    Intent(
+                        this,
+                        CSTicketActivity::class.java
+                    )
+                )
             }
             R.id.nav_tnc -> {
                 goto(TncFragment())
@@ -123,18 +154,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun logout(){
+    fun logout() {
         prefs[SharedPrefKeys.USER_NAME.toString()] = ""
         prefs[SharedPrefKeys.USER_EMAIL.toString()] = ""
         prefs[SharedPrefKeys.USER_TOKEN.toString()] = ""
         prefs[SharedPrefKeys.USER_ID.toString()] = ""
         prefs[SharedPrefKeys.USER_PICTURE.toString()] = ""
         prefs[SharedPrefKeys.FCM_TOKEN.toString()] = ""
+        (application as DoctorApplication).initDagger()
         finish()
-        startActivity(Intent(
-            this,
-            LoginActivity::class.java
-        ))
+        startActivity(
+            Intent(
+                this,
+                LoginActivity::class.java
+            )
+        )
     }
 
     fun registerFcm() {
@@ -157,7 +191,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
     }
 
-    fun openGmail(){
+    fun openGmail() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             type = "message/rfc822"
             data = Uri.parse("mailto:")
@@ -168,7 +202,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (doubleBackPressedOnce){
+        if (doubleBackPressedOnce) {
             super.onBackPressed()
             return
         }
@@ -182,8 +216,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
-        if (dataModel is UtilModel){
+        if (dataModel is UtilModel) {
             prefs[SharedPrefKeys.FCM_TOKEN.toString()] = fcmToken
+            Log.i("fcmRegistration", "success")
+        } else if (dataModel is UtilModelArray) {
+            val model = Gson().fromJson(response, ProfileResponse::class.java).data.user
+            checkIfProfileIsComplete(model)
+        }
+    }
+
+    private fun checkIfProfileIsComplete(user: User) {
+        if (user.full_name.isNullOrEmpty() ||
+            user.gender.isNullOrEmpty() ||
+            user.mobileNumber.isEmpty() ||
+            user.languages.isNullOrEmpty() ||
+            user.yearsOfExperience.isNullOrEmpty() ||
+            user.kyc == null ||
+            user.bank?.name.isNullOrEmpty() ||
+            user.bank?.customerName.isNullOrEmpty() ||
+            user.bank?.routingNumber.isNullOrEmpty() ||
+            user.bank?.accountNumber.toString().isEmpty()
+        ) {
+            finishAffinity()
+            Toast.makeText(this, "Please complete your profile before starting", Toast.LENGTH_SHORT)
+                .show()
+            startActivity(
+                Intent(
+                    this, ULEditProfileActivity::class.java
+                )
+            )
         }
     }
 

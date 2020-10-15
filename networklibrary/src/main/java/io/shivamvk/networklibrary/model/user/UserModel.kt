@@ -14,5 +14,6 @@ data class UserModel(
     val dob: String = "",
     val education: String = "",
     val college: String = "",
-    val gender: String = ""
+    val gender: String = "",
+    val expertise: String = ""
 ): BaseModel, Serializable

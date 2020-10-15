@@ -20,6 +20,8 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
             android:text="New Ticket"
+            app:elevation="5dp"
+            android:onClick="addnewTicket"
             android:textColor="@color/colorWhite"
             app:backgroundTint="@color/colorPrimary"
             app:icon="@drawable/ic_add_member"
@@ -27,7 +29,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"

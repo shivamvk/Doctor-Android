@@ -5,11 +5,14 @@ import ai.mindful.doctor.di.DoctorApplication
 import ai.mindful.doctor.ui.bottomsheet.TemplateBottomSheet
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -28,10 +31,7 @@ import io.shivamvk.networklibrary.api.ApiManagerListener
 import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
 import io.shivamvk.networklibrary.model.UtilModel
-import io.shivamvk.networklibrary.model.appointment.AppointmentModel
-import io.shivamvk.networklibrary.model.appointment.TemplateExamResponse
-import io.shivamvk.networklibrary.model.appointment.TemplateModel
-import io.shivamvk.networklibrary.model.appointment.TemplateRosResponse
+import io.shivamvk.networklibrary.model.appointment.*
 import io.shivamvk.networklibrary.models.BaseModel
 import io.shivamvk.networklibrary.sharedprefs.SharedPrefKeys
 import io.shivamvk.networklibrary.sharedprefs.PreferencesHelper.get
@@ -47,6 +47,8 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     lateinit var apiService: ApiService
     private val PERMISSION_REQ_ID_CAMERA: Int = 975
     private val PERMISSION_REQ_ID_RECORD_AUDIO: Int = 180
+    var callStarted: Boolean = false
+    var seconds: Long = 0
     lateinit var binding: ActivityVideoCallBinding
     private var rtcEngine: RtcEngine? = null
     private var rtmClient: RtmClient? = null
@@ -57,6 +59,7 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     lateinit var templateBottomSheet: TemplateBottomSheet
     var rosList = ArrayList<TemplateModel>()
     var examList = ArrayList<TemplateModel>()
+    lateinit var rosExamBookingPutModel: RosExamBookingPutModel
     private val rtcEventHandler = object : IRtcEngineEventHandler() {
 
         // Listen for the onFirstRemoteVideoDecoded callback.
@@ -98,18 +101,22 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         sendNotificationToPatient()
         binding.btnCall.setOnClickListener(this)
         binding.btnMute.setOnClickListener(this)
+        binding.btnMute.isSelected = false
+        binding.btnSwitchCamera.isSelected = false
         binding.btnSwitchCamera.setOnClickListener(this)
         appointmentModel = intent.getSerializableExtra("appointmentModel") as AppointmentModel
         binding.booking = appointmentModel
+        rosExamBookingPutModel = RosExamBookingPutModel()
         ApiManager(
-            ApiRoutes.templateRosTypes,
+            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "ROS"),
             apiService,
             TemplateRosResponse(),
             this,
             null
         ).doGETAPICall()
+        Log.i("shivamvk####", ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"))
         ApiManager(
-            ApiRoutes.templateExamTypes,
+            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"),
             apiService,
             TemplateExamResponse(),
             this,
@@ -149,7 +156,9 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
             UtilModel(),
             this,
             null
-        ).doPOSTAPICall(JsonObject())
+        ).doPOSTAPICall(JsonObject().apply {
+            addProperty("booking", appointmentModel._id)
+        })
     }
 
     private fun initializeAgoraEngine() {
@@ -211,6 +220,32 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         val surfaceView = RtcEngine.CreateRendererView(baseContext)
         binding.remoteVideoViewContainer.addView(surfaceView)
         rtcEngine!!.setupRemoteVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid))
+        callStarted = true
+        startTimer()
+    }
+
+    fun startTimer(){
+        Handler().postDelayed(
+            {
+                if (callStarted){
+                    seconds++
+                    var m = ""
+                    var s = ""
+                    if (seconds < 60){
+                        m = "00"
+                        s = seconds.toString()
+                    } else {
+                        m = (seconds/60).toString()
+                        if (m.length == 1){
+                            m = "0${m}"
+                        }
+                        s = (seconds%60).toString()
+                    }
+                    binding.timer.text = "${m}:${s}"
+                    startTimer()
+                }
+            }, 1000
+        )
     }
 
     private fun setupLocalVideo() {
@@ -222,7 +257,7 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     }
 
     private fun joinChannel() {
-        rtcEngine!!.joinChannel(null, "asdfghjkl", "Extra Optional Data", 0)
+        rtcEngine!!.joinChannel(null, "asdfghjkl", "Extra Optional io.shivamvk.networklibrary.model.profile.Data", 0)
     }
 
     private fun initAgoraEngineAndJoinChannel() {
@@ -254,6 +289,11 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         rtcEngine = null
         rtmClient?.logout(null)
         mediaPlayer?.stop()
+        if (callStarted){
+            startActivity(Intent(
+                this, TakeNoteActivity::class.java
+            ))
+        }
     }
 
 
@@ -374,15 +414,17 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     override fun onSuccess(dataModel: BaseModel?, response: String) {
         when(dataModel){
             is TemplateRosResponse -> {
+                Log.i("ros$$###", response)
                 rosList = Gson().fromJson(response, TemplateRosResponse::class.java).data
                 if (examList.isNotEmpty()){
-                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList)
+                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, rosExamBookingPutModel)
                 }
             }
             is TemplateExamResponse -> {
+                Log.i("ros$$###", response)
                 examList = Gson().fromJson(response, TemplateExamResponse::class.java).data
                 if (examList.isNotEmpty()){
-                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList)
+                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, rosExamBookingPutModel)
                 }
             }
         }

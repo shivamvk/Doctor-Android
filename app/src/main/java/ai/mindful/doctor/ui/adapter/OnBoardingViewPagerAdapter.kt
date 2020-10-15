@@ -1,6 +1,7 @@
 package ai.mindful.doctor.ui.adapter
 
 import ai.mindful.doctor.R
+import ai.mindful.doctor.utils.ClientPrefs
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class OnBoardingViewPagerAdapter : PagerAdapter() {
         when(position){
             0 -> {
                 view.findViewById<LottieAnimationView>(R.id.anim).setAnimation(io.shivamvk.networklibrary.R.raw.onboarding_anim_1)
-                view.findViewById<TextView>(R.id.heading).text = "Welcome to Doctor app"
+                view.findViewById<TextView>(R.id.heading).text = "Welcome to ${ClientPrefs.clientName}"
                 view.findViewById<TextView>(R.id.subheading).text = "Register as an expert with us and get connected with users all across the globe"
             }
             1 -> {

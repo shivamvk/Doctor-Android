@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
                     android:textColor="@color/colorBlack"
-                    android:text="All payments are dispatched to accounts weekly! Please make sure you have uploaded your documents"
+                    android:text="All payments are dispatched to accounts weekly! Please make sure you have filled your profile details"
                     android:textSize="12sp"
                     android:fontFamily="@font/poppins_light"/>
 
@@ -64,7 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\u20b9 0"
+                android:text="\u0024 0"
                 android:textSize="22sp"
                 android:textColor="@color/colorPrimary"
                 android:layout_gravity="left"

@@ -7,5 +7,5 @@ data class AuthResponse(
     var status: Long = 200,
     var message: String = "",
     var data: AuthModel? = null,
-    var errors: Boolean = false
+    var errors: Boolean = true
 ): BaseModel, Serializable

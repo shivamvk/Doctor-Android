@@ -4,7 +4,7 @@
 <!--    PURPLE LIGHT D15FEE-->
     <!--    BLUE 0473FC-->
     <color name="colorPrimary">#832593</color>
-    <color name="primaryLight">#D15FEE</color>
+    <color name="primaryLight">#832593</color>
     <color name="colorPrimaryDark">#832593</color>
     <color name="colorAccent">#832593</color>
     <color name="colorLightGrey">#f5f5f5</color>

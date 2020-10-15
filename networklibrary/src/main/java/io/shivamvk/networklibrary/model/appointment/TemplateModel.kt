@@ -4,6 +4,8 @@ import io.shivamvk.networklibrary.models.BaseModel
 import java.io.Serializable
 
 data class TemplateModel(
-    val name: String = "",
-    val options: ArrayList<OptionsModel> = ArrayList()
+    val _id: String = "",
+    val symptom: String = "",
+    val title: String = "",
+    val answers: ArrayList<String> = ArrayList()
 ): BaseModel, Serializable
