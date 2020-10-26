@@ -416,22 +416,22 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
         when(dataModel){
-//            is TemplateRosResponse -> {
-//                Log.i("ros$$###", response)
-//                rosList = Gson().fromJson(response, TemplateRosResponse::class.java).data
-//                if (examList.isNotEmpty()){
-//                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, callAsessmentModel)
-//                    setBehaviuor()
-//                }
-//            }
-//            is TemplateExamResponse -> {
-//                Log.i("ros$$###", response)
-//                examList = Gson().fromJson(response, TemplateExamResponse::class.java).data
-//                if (examList.isNotEmpty()){
-//                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, callAsessmentModel)
-//                    setBehaviuor()
-//                }
-//            }
+            is TemplateRosResponse -> {
+                Log.i("ros$$###", response)
+                rosList = Gson().fromJson(response, TemplateRosResponse::class.java).data
+                if (examList.isNotEmpty()){
+                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, callAsessmentModel)
+                    setBehaviuor()
+                }
+            }
+            is TemplateExamResponse -> {
+                Log.i("ros$$###", response)
+                examList = Gson().fromJson(response, TemplateExamResponse::class.java).data
+                if (examList.isNotEmpty()){
+                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, callAsessmentModel)
+                    setBehaviuor()
+                }
+            }
         }
     }
 
