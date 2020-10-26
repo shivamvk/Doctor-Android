@@ -110,28 +110,28 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         binding.btnSwitchCamera.setOnClickListener(this)
         binding.booking = appointmentModel
         rosExamBookingPutModel = RosExamBookingPutModel()
-//        ApiManager(
-//            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "ROS"),
-//            apiService,
-//            TemplateRosResponse(),
-//            this,
-//            null
-//        ).doGETAPICall()
-//        Log.i("shivamvk####", ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"))
-//        ApiManager(
-//            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"),
-//            apiService,
-//            TemplateExamResponse(),
-//            this,
-//            null
-//        ).doGETAPICall()
-//        binding.remoteVideoViewContainer.setOnTouchListener { v, event ->
-//            if (event.action == MotionEvent.ACTION_UP){
-//                if (templateBottomSheet != null)
-//                    templateBottomSheet.show(supportFragmentManager, "templates")
-//            }
-//            true
-//        }
+        ApiManager(
+            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "ROS"),
+            apiService,
+            TemplateRosResponse(),
+            this,
+            null
+        ).doGETAPICall()
+        Log.i("shivamvk####", ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"))
+        ApiManager(
+            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"),
+            apiService,
+            TemplateExamResponse(),
+            this,
+            null
+        ).doGETAPICall()
+        binding.remoteVideoViewContainer.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP){
+                if (templateBottomSheet != null)
+                    templateBottomSheet.show(supportFragmentManager, "templates")
+            }
+            true
+        }
     }
 
     fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
