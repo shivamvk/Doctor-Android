@@ -14,22 +14,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.shivamvk.networklibrary.model.appointment.AppointmentModel
-import io.shivamvk.networklibrary.model.appointment.RosExamBookingPutModel
 import io.shivamvk.networklibrary.model.appointment.TemplateModel
+import io.shivamvk.networklibrary.model.callasessment.CallAsessmentModel
 
 
 class TemplateBottomSheet(
     val appointmentModel: AppointmentModel,
     val rosList: ArrayList<TemplateModel>,
     val examList: ArrayList<TemplateModel>,
-    var rosExamBookingPutModel: RosExamBookingPutModel
+    var callAsessmentModel: CallAsessmentModel
 ): BottomSheetDialogFragment() {
 
     lateinit var binding: TemplateBottomSheetBinding
@@ -40,6 +42,11 @@ class TemplateBottomSheet(
         Log.i("ros", "shivamvk##### ${rosList.toString()}")
         Log.i("exam", "shivamvk#### ${examList.toString()}")
         binding.booking = appointmentModel
+
+//        var behavior = BottomSheetBehavior.from<RelativeLayout>(binding.bottomSheet)
+//        behavior.isDraggable = false
+//        behavior.halfExpandedRatio = 0.6f
+
         var cmlm = FlexboxLayoutManager(context)
         cmlm.flexDirection = FlexDirection.ROW
         cmlm.justifyContent = JustifyContent.FLEX_START
@@ -101,10 +108,10 @@ class TemplateBottomSheet(
         }
         binding.templateType.visibility = View.GONE
         binding.rvPhysicalExam.layoutManager = LinearLayoutManager(context)
-        binding.rvPhysicalExam.adapter = TemplateExamAdapter(context!!, examList, rosExamBookingPutModel)
+        binding.rvPhysicalExam.adapter = TemplateExamAdapter(context!!, examList, callAsessmentModel)
 
         binding.rvRos.layoutManager = LinearLayoutManager(context)
-        binding.rvRos.adapter = TemplateRosAdapter(context!!, rosList, rosExamBookingPutModel)
+        binding.rvRos.adapter = TemplateRosAdapter(context!!, rosList, callAsessmentModel)
 
         binding.save.setOnClickListener {
             this.dismiss()
@@ -117,6 +124,7 @@ class TemplateBottomSheet(
                 allowedTemplateTypes.contains(binding.templateType.editText?.text.toString())){
             appointmentModel.templateType = binding.templateType.editText?.text.toString()
         }
+        Log.i("callAssessment", callAsessmentModel.toString())
     }
 
     override fun onCreateView(

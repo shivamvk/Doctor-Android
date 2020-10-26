@@ -16,32 +16,35 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class FCMService: FirebaseMessagingService() {
+class FCMService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage?) {
         super.onMessageReceived(message)
-        if (message?.data?.get("channel").toString() == "booking-confirmation"){
-            val builder =
-                NotificationCompat.Builder(this, "booking-confirmation")
-            val manager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            builder.setSmallIcon(R.drawable.ic_logo)
-            builder.setLargeIcon(
-                Glide.with(applicationContext)
-                    .asBitmap()
-                    .load(R.drawable.ic_user)
-                    .submit()
-                    .get()
-            )
-            builder.setContentTitle(message?.data?.get("title"))
-            builder.setContentText(message?.data?.get("body"))
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel =
-                    NotificationChannel("booking-confirmation", "Appointment details", NotificationManager.IMPORTANCE_HIGH)
-                manager.createNotificationChannel(channel)
-            }
-            manager.notify(0, builder.build())
+        Log.i("remoteMessage", message?.data.toString() + "###")
+        val builder =
+            NotificationCompat.Builder(this, message?.data?.get("channel").toString())
+        val manager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        builder.setSmallIcon(R.drawable.ic_logo)
+        builder.setLargeIcon(
+            Glide.with(applicationContext)
+                .asBitmap()
+                .load(R.drawable.ic_user)
+                .submit()
+                .get()
+        )
+        builder.setContentTitle(message?.data?.get("title"))
+        builder.setContentText(message?.data?.get("body"))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel(
+                    message?.data?.get("channel").toString(),
+                    "General notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+            manager.createNotificationChannel(channel)
         }
+        manager.notify(0, builder.build())
     }
 
     private fun getBitmapfromUri(imageUri: String): Bitmap? {

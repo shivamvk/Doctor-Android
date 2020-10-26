@@ -40,6 +40,9 @@ class AppointmentDetailActivity : AppCompatActivity() {
             binding.cancelCallSection.visibility = View.GONE
             binding.cancellationReason.visibility = View.VISIBLE
             binding.cancellationReason.text = "${appointmentModel.status}\n${appointmentModel.cancellationReason}"
+        } else if (appointmentModel.status == "Completed"){
+            binding.call.text = "Called patient"
+            binding.call.setOnClickListener(null)
         }
         binding.cancel.setOnClickListener {
             var cbs = CancelOrderBottomSheet(appointmentModel._id)

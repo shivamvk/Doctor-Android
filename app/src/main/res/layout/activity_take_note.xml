@@ -16,6 +16,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back"
+                app:tint="@color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"/>
 
@@ -23,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Assessment"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:fontFamily="@font/poppins_medium"
                 android:layout_marginHorizontal="16dp"
                 android:textColor="@color/black"/>
@@ -39,7 +40,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:inputType="text"
                     android:minLines="4"
                     android:maxLines="4"
@@ -59,6 +60,13 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:textAllCaps="false"/>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/progress_bar"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

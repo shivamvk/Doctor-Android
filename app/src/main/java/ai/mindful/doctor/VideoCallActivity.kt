@@ -11,15 +11,16 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.agora.rtc.IRtcEngineEventHandler
@@ -32,6 +33,7 @@ import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
 import io.shivamvk.networklibrary.model.UtilModel
 import io.shivamvk.networklibrary.model.appointment.*
+import io.shivamvk.networklibrary.model.callasessment.CallAsessmentModel
 import io.shivamvk.networklibrary.models.BaseModel
 import io.shivamvk.networklibrary.sharedprefs.SharedPrefKeys
 import io.shivamvk.networklibrary.sharedprefs.PreferencesHelper.get
@@ -60,6 +62,7 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
     var rosList = ArrayList<TemplateModel>()
     var examList = ArrayList<TemplateModel>()
     lateinit var rosExamBookingPutModel: RosExamBookingPutModel
+    var callAsessmentModel = CallAsessmentModel()
     private val rtcEventHandler = object : IRtcEngineEventHandler() {
 
         // Listen for the onFirstRemoteVideoDecoded callback.
@@ -81,6 +84,7 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         super.onCreate(savedInstanceState)
         (application as DoctorApplication).getDeps().inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
+        appointmentModel = intent.getSerializableExtra("appointmentModel") as AppointmentModel
         init()
     }
 
@@ -104,31 +108,30 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         binding.btnMute.isSelected = false
         binding.btnSwitchCamera.isSelected = false
         binding.btnSwitchCamera.setOnClickListener(this)
-        appointmentModel = intent.getSerializableExtra("appointmentModel") as AppointmentModel
         binding.booking = appointmentModel
         rosExamBookingPutModel = RosExamBookingPutModel()
-        ApiManager(
-            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "ROS"),
-            apiService,
-            TemplateRosResponse(),
-            this,
-            null
-        ).doGETAPICall()
-        Log.i("shivamvk####", ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"))
-        ApiManager(
-            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"),
-            apiService,
-            TemplateExamResponse(),
-            this,
-            null
-        ).doGETAPICall()
-        binding.remoteVideoViewContainer.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_UP){
-                if (templateBottomSheet != null)
-                    templateBottomSheet.show(supportFragmentManager, "templates")
-            }
-            true
-        }
+//        ApiManager(
+//            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "ROS"),
+//            apiService,
+//            TemplateRosResponse(),
+//            this,
+//            null
+//        ).doGETAPICall()
+//        Log.i("shivamvk####", ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"))
+//        ApiManager(
+//            ApiRoutes.questions(appointmentModel.symptoms?.get(0)?.symptomId!!, "Examination"),
+//            apiService,
+//            TemplateExamResponse(),
+//            this,
+//            null
+//        ).doGETAPICall()
+//        binding.remoteVideoViewContainer.setOnTouchListener { v, event ->
+//            if (event.action == MotionEvent.ACTION_UP){
+//                if (templateBottomSheet != null)
+//                    templateBottomSheet.show(supportFragmentManager, "templates")
+//            }
+//            true
+//        }
     }
 
     fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
@@ -292,11 +295,11 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         if (callStarted){
             startActivity(Intent(
                 this, TakeNoteActivity::class.java
-            ))
+            ).putExtra("callAssessment", callAsessmentModel)
+                .putExtra("appointmentId", appointmentModel._id))
         }
     }
-
-
+    
     private fun leaveChannel() {
         rtcEngine!!.leaveChannel()
     }
@@ -413,21 +416,27 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
         when(dataModel){
-            is TemplateRosResponse -> {
-                Log.i("ros$$###", response)
-                rosList = Gson().fromJson(response, TemplateRosResponse::class.java).data
-                if (examList.isNotEmpty()){
-                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, rosExamBookingPutModel)
-                }
-            }
-            is TemplateExamResponse -> {
-                Log.i("ros$$###", response)
-                examList = Gson().fromJson(response, TemplateExamResponse::class.java).data
-                if (examList.isNotEmpty()){
-                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, rosExamBookingPutModel)
-                }
-            }
+//            is TemplateRosResponse -> {
+//                Log.i("ros$$###", response)
+//                rosList = Gson().fromJson(response, TemplateRosResponse::class.java).data
+//                if (examList.isNotEmpty()){
+//                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, callAsessmentModel)
+//                    setBehaviuor()
+//                }
+//            }
+//            is TemplateExamResponse -> {
+//                Log.i("ros$$###", response)
+//                examList = Gson().fromJson(response, TemplateExamResponse::class.java).data
+//                if (examList.isNotEmpty()){
+//                    templateBottomSheet = TemplateBottomSheet(appointmentModel, rosList, examList, callAsessmentModel)
+//                    setBehaviuor()
+//                }
+//            }
         }
+    }
+
+    private fun setBehaviuor() {
+
     }
 
     override fun onFailure(dataModel: BaseModel?, e: Throwable) {

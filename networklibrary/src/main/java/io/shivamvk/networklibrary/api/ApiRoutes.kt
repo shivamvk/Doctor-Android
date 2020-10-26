@@ -21,4 +21,5 @@ object ApiRoutes {
     val fp_sendOTpToEmail = "auth/forgetpassword"
     val fp_verifyotp = "auth/verifyresettoken"
     val fp_resetPassword = "auth/resetpassword"
+    fun callAssessment(id: String) = "appointment/id/${id}"
 }

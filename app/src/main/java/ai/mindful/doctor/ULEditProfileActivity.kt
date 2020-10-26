@@ -3,6 +3,7 @@ package ai.mindful.doctor
 import ai.mindful.doctor.databinding.ActivityULEditProfileBinding
 import ai.mindful.doctor.di.DoctorApplication
 import ai.mindful.doctor.ui.adapter.PillSelectorAdapter
+import ai.mindful.doctor.utils.CustomBindingAdapters
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -34,7 +35,6 @@ import io.shivamvk.networklibrary.model.appointment.SimpleSymptomResponse
 import io.shivamvk.networklibrary.model.profile.ProfileResponse
 import io.shivamvk.networklibrary.model.profile.User
 import io.shivamvk.networklibrary.models.BaseModel
-import kotlinx.android.synthetic.main.activity_edit_profile.et_name
 import kotlinx.android.synthetic.main.activity_u_l_edit_profile.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -59,12 +59,18 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
     var deaLicenseFile: File? = null
     var resumeFile: File? = null
     var signatureFile : File? = null
+    var incompleteProfile: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as DoctorApplication).getDeps().inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_u_l_edit_profile)
         supportActionBar?.hide()
+        incompleteProfile = intent.getBooleanExtra("incompleteProfile", false)
+        if (incompleteProfile) {
+            binding.back.visibility = View.GONE
+            binding.title.text = "We need the following details from you before you start"
+        }
         ApiManager(
             ApiRoutes.languages,
             apiService,
@@ -91,7 +97,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
             var dp = DatePickerDialog(
                 this,
                 { _, year, month, dayOfMonth ->
-                    binding.etDob.setText("${dayOfMonth}-${month}-${year}")
+                    binding.etDob.setText("${month}-${dayOfMonth}-${year}")
                     var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                     sdf.timeZone = TimeZone.getTimeZone("UTC")
                     var cal = Calendar.getInstance()
@@ -106,7 +112,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
             var dp = DatePickerDialog(
                 this,
                 { view, year, month, dayOfMonth ->
-                    binding.etMedicalLicenseExp.setText("${dayOfMonth}-${month}-${year}")
+                    binding.etMedicalLicenseExp.setText("${month}-${dayOfMonth}-${year}")
                     var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                     sdf.timeZone = TimeZone.getTimeZone("UTC")
                     var cal = Calendar.getInstance()
@@ -121,7 +127,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
             var dp = DatePickerDialog(
                 this,
                 { view, year, month, dayOfMonth ->
-                    binding.etDeaExpDate.setText("${dayOfMonth}-${month}-${year}")
+                    binding.etDeaExpDate.setText("${month}-${dayOfMonth}-${year}")
                     var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                     sdf.timeZone = TimeZone.getTimeZone("UTC")
                     var cal = Calendar.getInstance()
@@ -131,6 +137,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
             )
             dp.show()
         }
+
         binding.ivDrivingLicense.setOnClickListener {
             ImagePicker.with(this)
                 .crop(16f, 9f)
@@ -162,6 +169,9 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
                 .start(460)
         }
         binding.save.setOnClickListener {
+            if (!validateInputs()){
+                return@setOnClickListener
+            }
             binding.formLayout.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
             Log.i("langues####", languagesAdapter.selectedItems.toString())
@@ -176,7 +186,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 //            }
             var jsonObject = JsonObject().apply {
                 addProperty("full_name", et_name?.editText?.text.toString())
-                addProperty("gender", et_gender?.editText?.text.toString())
+                addProperty("gender", sp_gender.selectedItem.toString())
                 addProperty("dob", dob)
                 addProperty("country", et_country?.editText?.text.toString())
                 addProperty("postalCode", et_postal_code.editText?.text.toString())
@@ -200,21 +210,23 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 //                addProperty("stateLicense", et_state_license.editText?.text.toString())
 //                addProperty("licenseExpiration", et_license_expiration.editText?.text.toString())
 //                addProperty("boardExpiration", et_board_expiration.editText?.text.toString())
-                addProperty("yearsOfExperience", et_years_of_experience.editText?.text.toString())
+                addProperty("yearsOfExperience", et_years_of_experience.editText?.text.toString().toInt())
                 addProperty("malpracticeLawsuites", malpractice_yes.isChecked)
                 addProperty("medicalBoardDeciplinaryAction", mbda_yes.isChecked)
-//                addProperty("checkbox1.accepted", cb_1.isChecked)
+                addProperty("boardCertified", board_certified_yes.isChecked)
+                addProperty("checkbox1.accepted", cb_1.isChecked)
                 add("languages", languagesArray)
 //                add("symptoms", symptomsArray)
-//                addProperty("checkbox2.accepted", cb_2.isChecked)
-//                addProperty("checkbox3.accepted", cb_3.isChecked)
-//                addProperty("checkbox4.accepted", cb_4.isChecked)
-//                addProperty("checkbox5.accepted", cb_5.isChecked)
+                addProperty("checkbox2.accepted", cb_2.isChecked)
+                addProperty("checkbox3.accepted", cb_3.isChecked)
+                addProperty("checkbox4.accepted", cb_4.isChecked)
+                addProperty("checkbox5.accepted", cb_5.isChecked)
                 addProperty("bank.name", et_bank_name.editText?.text.toString())
                 addProperty("bank.customerName", et_customer_name.editText?.text.toString())
                 addProperty("bank.routingNumber", et_routing_number.editText?.text.toString())
                 addProperty("bank.accountNumber", et_account_number.editText?.text.toString())
             }
+            Log.i("updateProfile", jsonObject.toString())
             saveFiles()
             ApiManager(
                 ApiRoutes.ULupdateProfile,
@@ -227,6 +239,74 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
         binding.back.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun validateInputs(): Boolean {
+        if (et_name.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (dob.isEmpty()){
+            Toast.makeText(this, "Date of birth is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_country.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Country is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_postal_code.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Postal code is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_mobile.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Mobile is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_medical_license_number.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Medical license no. is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (medicalLicenseExpDate.isEmpty()){
+            Toast.makeText(this, "Medical license exp date is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_medical_license_state.editText?.text.toString().isEmpty()) {
+            Toast.makeText(this, "Medical license state is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_years_of_experience.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Experience is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_dea_license_number.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "DEA license no. is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (deaLicenseEXpDate.isEmpty()){
+            Toast.makeText(this, "DEA license exp date is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_bank_name.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Bank n ame is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_customer_name.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Account holder name is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_routing_number.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Routing no. is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (et_account_number.editText?.text.toString().isEmpty()){
+            Toast.makeText(this, "Account no. is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (languagesAdapter.selectedItems.isEmpty()){
+            Toast.makeText(this, "At least one language is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 
     fun saveFiles(){
@@ -362,13 +442,21 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 
     private fun fillDetails(user: User) {
         et_name.editText?.setText(user.full_name)
-        et_gender.editText?.setText(user.gender)
+        if (user.gender == "Male" || user.gender == "male"){
+            sp_gender.setSelection(0)
+        } else {
+            sp_gender.setSelection(1)
+        }
         et_country.editText?.setText(user.country)
-        et_dob.setText(readableStringFromISO(user.dob))
+        if (!user.dob.isNullOrEmpty()) {
+            et_dob.setText(CustomBindingAdapters.readableStringFromISO(user.dob))
+            dob = user.dob
+        }
         et_postal_code.editText?.setText(user.postalCode)
         et_mobile.editText?.setText(user.mobileNumber)
         et_medical_license_number.editText?.setText(user.medicalLicenseNumber)
-        et_medical_license_exp.setText(readableStringFromISO(user.medicalLicenseExpiration))
+        et_medical_license_exp.setText(CustomBindingAdapters.readableStringFromISO(user.medicalLicenseExpiration))
+        medicalLicenseExpDate = user.medicalLicenseExpiration
         et_medical_license_state.editText?.setText(user.medicalLicenseState)
 //        et_education.editText?.setText(user.education)
 //        et_college.editText?.setText(user.college)
@@ -378,13 +466,23 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 //        et_license_expiration.editText?.setText(user.licenseExpiration)
 //        et_board_expiration.editText?.setText(user.boardExpiration)
         et_dea_license_number.editText?.setText(user.deaLicenseNumber)
-        et_dea_exp_date.setText(readableStringFromISO(user.deaLicenseExpirationDate))
+        et_dea_exp_date.setText(CustomBindingAdapters.readableStringFromISO(user.deaLicenseExpirationDate))
+        deaLicenseEXpDate = user.deaLicenseExpirationDate
         et_bank_name.editText?.setText(user.bank?.name)
         et_customer_name.editText?.setText(user.bank?.customerName)
         et_routing_number.editText?.setText(user.bank?.routingNumber)
         et_account_number.editText?.setText(user.bank?.accountNumber)
         malpractice_yes.isChecked = user.malpracticeLawsuites
         mbda_yes.isChecked = user.medicalBoardDeciplinaryAction
+        board_certified_yes.isChecked = user.boardCertified
+        user.languages.forEach {
+            languagesAdapter.selectedItems.add(it._id)
+        }
+//        user.symptoms.forEach {
+//            symptomsAdapter.selectedItems.add(it._id!!)
+//        }
+        languagesAdapter.notifyDataSetChanged()
+//        symptomsAdapter.notifyDataSetChanged()
         Glide.with(this)
             .load(BuildConfig.AWSURL + user.kyc!!.drivingLicense)
             .into(iv_driving_license)
@@ -403,36 +501,12 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
         Glide.with(this)
             .load(BuildConfig.AWSURL + user.profile_picture)
             .into(profile_image)
+        cb_1.isChecked = user.checkbox1.accepted
+        cb_2.isChecked = user.checkbox2.accepted
+        cb_3.isChecked = user.checkbox3.accepted
+        cb_4.isChecked = user.checkbox4.accepted
+        cb_5.isChecked = user.checkbox5.accepted
 
-//        cb_1.isChecked = user.checkbox1.accepted
-//        cb_2.isChecked = user.checkbox2.accepted
-//        cb_3.isChecked = user.checkbox3.accepted
-//        cb_4.isChecked = user.checkbox4.accepted
-//        cb_5.isChecked = user.checkbox5.accepted
-        user.languages.forEach {
-            languagesAdapter.selectedItems.add(it._id)
-        }
-//        user.symptoms.forEach {
-//            symptomsAdapter.selectedItems.add(it._id!!)
-//        }
-        languagesAdapter.notifyDataSetChanged()
-//        symptomsAdapter.notifyDataSetChanged()
-    }
-
-    private fun readableStringFromISO(string: String): String {
-        return try{
-            var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            var date = gmttoLocalDate(sdf.parse(string))
-            SimpleDateFormat("dd-MM-yyyy").format(date)
-        } catch (e: Exception){
-            e.printStackTrace()
-            ""
-        }
-    }
-
-    fun gmttoLocalDate(date: Date): Date? {
-        val timeZone = Calendar.getInstance().timeZone.id
-        return Date(date.time + TimeZone.getTimeZone(timeZone).getOffset(date.time))
     }
 
     override fun onFailure(dataModel: BaseModel?, e: Throwable) {

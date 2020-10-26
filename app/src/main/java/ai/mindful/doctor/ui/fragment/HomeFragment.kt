@@ -1,18 +1,16 @@
 package ai.mindful.doctor.ui.fragment
 
-import ai.mindful.doctor.EditProfileActivity
-import ai.mindful.doctor.MainActivity
+import ai.mindful.doctor.*
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ai.mindful.doctor.R
-import ai.mindful.doctor.VideoCallActivity
 import ai.mindful.doctor.databinding.FragmentHomeBinding
 import ai.mindful.doctor.di.DoctorApplication
 import ai.mindful.doctor.ui.adapter.AppointmentAdapter
 import ai.mindful.doctor.ui.viewmodel.HomeFragmentViewModel
+import ai.mindful.doctor.utils.ClientPrefs
 import ai.mindful.doctor.utils.ReminderBroadcastReceiver
 import ai.mindful.doctor.utils.ViewModelFactory
 import android.app.Activity
@@ -78,11 +76,19 @@ class HomeFragment : Fragment(), ApiManagerListener {
             (context as MainActivity).goto(AppointmentFragment())
         }
         binding.profile.setOnClickListener {
-            startActivity(
-                Intent(
-                    context, EditProfileActivity::class.java
+            if (ClientPrefs.isEazemeupClient){
+                startActivity(
+                    Intent(
+                        context, EditProfileActivity::class.java
+                    )
                 )
-            )
+            } else {
+                startActivity(
+                    Intent(
+                        context, ULEditProfileActivity::class.java
+                    )
+                )
+            }
         }
         binding.wallet.setOnClickListener {
             (context as MainActivity).goto(WalletFragment())

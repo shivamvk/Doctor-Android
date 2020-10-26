@@ -118,15 +118,19 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
     }
 
     fun validateLoginInputs(): Boolean {
-        if (et_email.editText?.text.toString().isEmpty()) {
-            et_email.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
-            et_email.error = "Email is required"
-            return false
-        }
-        if (et_password.editText?.text.toString().isEmpty()) {
-            et_password.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
-            et_password.error = "Password is required"
-            return false
+        try{
+            if (et_email.editText?.text.toString().isEmpty()) {
+                et_email.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
+                et_email.error = "Email is required"
+                return false
+            }
+            if (et_password.editText?.text.toString().isEmpty()) {
+                et_password.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
+                et_password.error = "Password is required"
+                return false
+            }
+        } catch (e: Exception){
+            e.printStackTrace()
         }
         return true
     }
@@ -149,25 +153,29 @@ class LoginActivity : AppCompatActivity(), ApiManagerListener {
     }
 
     fun validateInputsForSignup(): Boolean {
-        if (et_email.editText?.text.toString().isEmpty()) {
-            et_email.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
-            et_email.error = "Email is required"
-            return false
-        }
-        if (et_password.editText?.text.toString().isEmpty()) {
-            et_password.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
-            et_password.error = "Password is required"
-            return false
-        }
-        if (et_name.editText?.text.toString().isEmpty()) {
-            et_name.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
-            et_name.error = "Name is required"
-            return false
-        }
-        if (!tv_tnc_pp.isChecked) {
-            Toast.makeText(this, "Please accept the terms and conditions", Toast.LENGTH_SHORT)
-                .show()
-            return false
+        try {
+            if (et_email.editText?.text.toString().isEmpty()) {
+                et_email.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
+                et_email.error = "Email is required"
+                return false
+            }
+            if (et_password.editText?.text.toString().isEmpty()) {
+                et_password.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
+                et_password.error = "Password is required"
+                return false
+            }
+            if (et_name.editText?.text.toString().isEmpty()) {
+                et_name.errorIconDrawable = resources.getDrawable(R.drawable.ic_error)
+                et_name.error = "Name is required"
+                return false
+            }
+            if (!tv_tnc_pp.isChecked) {
+                Toast.makeText(this, "Please accept the terms and conditions", Toast.LENGTH_SHORT)
+                    .show()
+                return false
+            }
+        } catch (e: Exception){
+            e.printStackTrace() 
         }
         return true
     }

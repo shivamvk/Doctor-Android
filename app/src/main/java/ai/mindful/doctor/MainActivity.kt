@@ -228,10 +228,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun checkIfProfileIsComplete(user: User) {
         if (user.full_name.isNullOrEmpty() ||
             user.gender.isNullOrEmpty() ||
-            user.mobileNumber.isEmpty() ||
+//            user.mobileNumber.isEmpty() ||
             user.languages.isNullOrEmpty() ||
             user.yearsOfExperience.isNullOrEmpty() ||
-            user.kyc == null ||
+//            user.kyc == null ||
             user.bank?.name.isNullOrEmpty() ||
             user.bank?.customerName.isNullOrEmpty() ||
             user.bank?.routingNumber.isNullOrEmpty() ||
@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(
                 Intent(
                     this, ULEditProfileActivity::class.java
-                )
+                ).putExtra("incompleteProfile", true)
             )
         }
     }

@@ -25,6 +25,17 @@ object CustomBindingAdapters {
         textview.setText("${day}, ${month}")
     }
 
+    fun readableStringFromISO(string: String): String {
+        return try{
+            var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            var date = gmtToLocalDate(sdf.parse(string))
+            SimpleDateFormat("MM-dd-yyyy").format(date)
+        } catch (e: Exception){
+            e.printStackTrace()
+            ""
+        }
+    }
+
     @JvmStatic
     @BindingAdapter("ticketDateFromISO")
     fun setTicketDateFromIso(textView: TextView, string: String){

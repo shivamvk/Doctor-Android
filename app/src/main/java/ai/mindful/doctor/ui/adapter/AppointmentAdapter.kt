@@ -3,6 +3,7 @@ package ai.mindful.doctor.ui.adapter
 import ai.mindful.doctor.AppointmentDetailActivity
 import ai.mindful.doctor.VideoCallActivity
 import ai.mindful.doctor.databinding.AppointmentItemLayoutBinding
+import ai.mindful.doctor.utils.CustomBindingAdapters
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ class AppointmentAdapter(
             appointment: AppointmentModel
         ){
             binding.appointment = appointment
+            binding.dobGender.text = "${CustomBindingAdapters.readableStringFromISO(appointment.patient?.dob!!)}, ${appointment.patient?.gender}"
             binding.item.setOnClickListener {
                 context.startActivity(Intent(
                     context,

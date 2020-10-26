@@ -8,44 +8,52 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import io.shivamvk.networklibrary.model.appointment.ExamModel
-import io.shivamvk.networklibrary.model.appointment.RosExamBookingPutModel
 import io.shivamvk.networklibrary.model.appointment.TemplateModel
+import io.shivamvk.networklibrary.model.callasessment.CARosAnswerModel
+import io.shivamvk.networklibrary.model.callasessment.CARosModel
+import io.shivamvk.networklibrary.model.callasessment.CallAsessmentModel
 
 class TemplateExamAdapter(
     val context: Context,
     val data: List<TemplateModel>,
-    var rosExamBookingPutModel: RosExamBookingPutModel
+    var callAsessmentModel: CallAsessmentModel
 ): RecyclerView.Adapter<TemplateExamAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: TemplateExamItemLayoutBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(
             templateModel: TemplateModel,
             context: Context,
-            rosExamBookingPutModel: RosExamBookingPutModel,
+            callAsessmentModel: CallAsessmentModel,
             position: Int
         ){
             binding.template = templateModel
-            var examModel = ExamModel()
-            examModel.type = templateModel.title
-            var answers = ArrayList<String>()
+            var examModel = CARosModel()
+            examModel.question = templateModel.title
+            var answers : MutableList<CARosAnswerModel> = emptyList<CARosAnswerModel>().toMutableList()
             for (option in templateModel.answers){
                 var rb = RadioButton(context)
                 rb.id = View.generateViewId()
                 rb.text = option
                 binding.rgOptions.addView(rb)
-                if (option == templateModel.answers[0]){
+                var caRosModel = CARosModel()
+                callAsessmentModel.examination?.forEach {
+                    if (it.question == templateModel.title){
+                        caRosModel = it
+                    }
+                }
+                if (caRosModel?.answers?.contains(CARosAnswerModel(option, true))!!){
                     rb.isChecked = true
-                    answers.add(option)
+                    answers.add(CARosAnswerModel(option, true))
                 }
                 rb.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked){
                         answers.clear()
-                        answers.add(option)
+                        answers.add(CARosAnswerModel(option, true))
                     }
                 }
             }
-            examModel.options = answers
-            rosExamBookingPutModel.examination?.add(examModel)
+            examModel.answers = answers
+            callAsessmentModel.examination?.add(examModel)
         }
     }
 
@@ -59,5 +67,5 @@ class TemplateExamAdapter(
     override fun getItemCount(): Int  = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(data[position], context, rosExamBookingPutModel, position)
+        holder.bind(data[position], context, callAsessmentModel, position)
 }

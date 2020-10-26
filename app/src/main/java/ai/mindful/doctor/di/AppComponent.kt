@@ -28,5 +28,6 @@ interface AppComponent {
     fun inject(activity: FPEnterEmailActivity)
     fun inject(activity: FPEnterOtpActivity)
     fun inject(activity: FPResetPasswordActivity)
+    fun inject(activity: TakeNoteActivity)
     //create fun inject() for all the activities, fragments etc using dagger
 }

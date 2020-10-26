@@ -44,6 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Edit profile"
+                    android:id="@+id/title"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:fontFamily="@font/poppins"/>
@@ -84,30 +85,37 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/et_gender"
+            <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:hint="Gender">
+                android:layout_marginTop="4dp"
+                android:id="@+id/sp_gender"
+                android:entries="@array/gender"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins"
-                    android:inputType="text"
-                    android:textColor="@color/colorBlack" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#303030"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <EditText
+            <TextView
                 android:id="@+id/et_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginHorizontal="16dp"
                 android:hint="Date of birth"
+                android:textSize="18sp"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/poppins"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#303030"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_country"
@@ -209,7 +217,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Professional details"
+                android:text="Medical degree"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:textSize="14sp"
@@ -240,6 +248,13 @@
                 android:id="@+id/sp_medical_license_type"
                 android:entries="@array/medical_license_types"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#303030"
+                android:layout_marginBottom="6dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_medical_license_number"
                 android:layout_width="match_parent"
@@ -256,14 +271,22 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
+            <TextView
                 android:id="@+id/et_medical_license_exp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:textSize="18sp"
+                android:layout_marginTop="6dp"
                 android:layout_marginHorizontal="16dp"
                 android:hint="Medical license expiration date"
                 android:fontFamily="@font/poppins"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="6dp"
+                android:background="#303030"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_medical_license_state"
@@ -313,14 +336,21 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
+            <TextView
                 android:id="@+id/et_dea_exp_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:textSize="18sp"
+                android:layout_marginTop="6dp"
                 android:layout_marginHorizontal="16dp"
                 android:hint="DEA license expiration date"
                 android:fontFamily="@font/poppins"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#303030"/>
 
 <!--            <com.google.android.material.textfield.TextInputLayout-->
 <!--                android:id="@+id/et_license_expiration"-->
@@ -551,6 +581,51 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Provides telehealth urgent clinical care with audio visual consult"
+                android:textSize="14sp"
+                android:id="@+id/cb_1"
+                android:fontFamily="@font/poppins"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Correspondence based on clinical judgements and UMED templates questionnaires protocols in accordance with regulatory requirements following UMED standards"
+                android:textSize="14sp"
+                android:id="@+id/cb_2"
+                android:fontFamily="@font/poppins"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Consult with MD supervisor as necessary"
+                android:textSize="14sp"
+                android:id="@+id/cb_3"
+                android:fontFamily="@font/poppins"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:id="@+id/cb_4"
+                android:text="Provide calling patients with specific clinical evaluation with proper template including review of past medical history, current medications, allergies, review of systems, diagnosis, prescribe medications and other areas related to patient's current condition and outcomes"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:id="@+id/cb_5"
+                android:text="Follow requlatory requirements and follow HIPPPA regularities and standards of practice"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -560,51 +635,6 @@
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins"/>
-
-<!--            <CheckBox-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginHorizontal="16dp"-->
-<!--                android:text="Provides telehealth urgent clinical care with audio visual consult"-->
-<!--                android:textSize="14sp"-->
-<!--                android:id="@+id/cb_1"-->
-<!--                android:fontFamily="@font/poppins"/>-->
-
-<!--            <CheckBox-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginHorizontal="16dp"-->
-<!--                android:text="Correspondence based on clinical judgements and UMED templates questionnaires protocols in accordance with regulatory requirements following UMED standards"-->
-<!--                android:textSize="14sp"-->
-<!--                android:id="@+id/cb_2"-->
-<!--                android:fontFamily="@font/poppins"/>-->
-
-<!--            <CheckBox-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginHorizontal="16dp"-->
-<!--                android:text="Consult with MD supervisor as necessary"-->
-<!--                android:textSize="14sp"-->
-<!--                android:id="@+id/cb_3"-->
-<!--                android:fontFamily="@font/poppins"/>-->
-
-<!--            <CheckBox-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginHorizontal="16dp"-->
-<!--                android:id="@+id/cb_4"-->
-<!--                android:text="Provide calling patients with specific clinical evaluation with proper template including review of past medical history, current medications, allergies, review of systems, diagnosis, prescribe medications and other areas related to patient's current condition and outcomes"-->
-<!--                android:textSize="14sp"-->
-<!--                android:fontFamily="@font/poppins"/>-->
-
-<!--            <CheckBox-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginHorizontal="16dp"-->
-<!--                android:id="@+id/cb_5"-->
-<!--                android:text="Follow requlatory requirements and follow HIPPPA regularities and standards of practice"-->
-<!--                android:textSize="14sp"-->
-<!--                android:fontFamily="@font/poppins"/>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
