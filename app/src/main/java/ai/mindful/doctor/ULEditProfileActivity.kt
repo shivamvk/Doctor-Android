@@ -44,21 +44,22 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
+class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener {
 
     lateinit var binding: ActivityULEditProfileBinding
     lateinit var languagesAdapter: PillSelectorAdapter<LanguageModel>
     lateinit var symptomsAdapter: PillSelectorAdapter<SimpleSymptomModel>
-    @Inject lateinit var apiService: ApiService
+    @Inject
+    lateinit var apiService: ApiService
     var dob = ""
     var medicalLicenseExpDate = ""
     var deaLicenseEXpDate = ""
-    var profilePictureFile:File? = null
+    var profilePictureFile: File? = null
     var dlFile: File? = null
-    var medicallicencseFile :File? = null
+    var medicallicencseFile: File? = null
     var deaLicenseFile: File? = null
     var resumeFile: File? = null
-    var signatureFile : File? = null
+    var signatureFile: File? = null
     var incompleteProfile: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,7 +170,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
                 .start(460)
         }
         binding.save.setOnClickListener {
-            if (!validateInputs()){
+            if (!validateInputs()) {
                 return@setOnClickListener
             }
             binding.formLayout.visibility = View.GONE
@@ -210,7 +211,10 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 //                addProperty("stateLicense", et_state_license.editText?.text.toString())
 //                addProperty("licenseExpiration", et_license_expiration.editText?.text.toString())
 //                addProperty("boardExpiration", et_board_expiration.editText?.text.toString())
-                addProperty("yearsOfExperience", et_years_of_experience.editText?.text.toString().toInt())
+                addProperty(
+                    "yearsOfExperience",
+                    et_years_of_experience.editText?.text.toString().toInt()
+                )
                 addProperty("malpracticeLawsuites", malpractice_yes.isChecked)
                 addProperty("medicalBoardDeciplinaryAction", mbda_yes.isChecked)
                 addProperty("boardCertified", board_certified_yes.isChecked)
@@ -242,31 +246,31 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
     }
 
     private fun validateInputs(): Boolean {
-        if (et_name.editText?.text.toString().isEmpty()){
+        if (et_name.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (dob.isEmpty()){
+        if (dob.isEmpty()) {
             Toast.makeText(this, "Date of birth is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_country.editText?.text.toString().isEmpty()){
+        if (et_country.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Country is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_postal_code.editText?.text.toString().isEmpty()){
+        if (et_postal_code.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Postal code is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_mobile.editText?.text.toString().isEmpty()){
+        if (et_mobile.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Mobile is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_medical_license_number.editText?.text.toString().isEmpty()){
+        if (et_medical_license_number.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Medical license no. is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (medicalLicenseExpDate.isEmpty()){
+        if (medicalLicenseExpDate.isEmpty()) {
             Toast.makeText(this, "Medical license exp date is required", Toast.LENGTH_SHORT).show()
             return false
         }
@@ -274,42 +278,48 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
             Toast.makeText(this, "Medical license state is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_years_of_experience.editText?.text.toString().isEmpty()){
+        if (et_years_of_experience.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Experience is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_dea_license_number.editText?.text.toString().isEmpty()){
+        if (et_dea_license_number.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "DEA license no. is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (deaLicenseEXpDate.isEmpty()){
+        if (deaLicenseEXpDate.isEmpty()) {
             Toast.makeText(this, "DEA license exp date is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_bank_name.editText?.text.toString().isEmpty()){
+        if (et_bank_name.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Bank n ame is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_customer_name.editText?.text.toString().isEmpty()){
+        if (et_customer_name.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Account holder name is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_routing_number.editText?.text.toString().isEmpty()){
+        if (et_routing_number.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Routing no. is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (et_account_number.editText?.text.toString().isEmpty()){
+        if (et_account_number.editText?.text.toString().isEmpty()) {
             Toast.makeText(this, "Account no. is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (languagesAdapter.selectedItems.isEmpty()){
+        if (languagesAdapter.selectedItems.isEmpty()) {
             Toast.makeText(this, "At least one language is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (!binding.cb1.isChecked ||
+            !binding.cb2.isChecked || !binding.cb3.isChecked || !binding.cb4.isChecked || !binding.cb5.isChecked
+        ) {
+            Toast.makeText(this, "Please read and accept all the disclaimers", Toast.LENGTH_SHORT).show()
             return false
         }
         return true
     }
 
-    fun saveFiles(){
+    fun saveFiles() {
         var params = ArrayList<MultipartBody.Part>()
         var profileMP = if (profilePictureFile == null)
             null else MultipartBody.Part
@@ -392,7 +402,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
     }
 
     override fun onSuccess(dataModel: BaseModel?, response: String) {
-        if (dataModel is LanguageResponse){
+        if (dataModel is LanguageResponse) {
             var model = Gson().fromJson(response, LanguageResponse::class.java).data
             var languagesLM = FlexboxLayoutManager(this)
             languagesLM.flexDirection = FlexDirection.ROW
@@ -406,7 +416,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
             binding.rvLanguages.adapter = languagesAdapter
             binding.progressBar.visibility = View.GONE
             binding.formLayout.visibility = View.VISIBLE
-        } else if(dataModel is SimpleSymptomResponse){
+        } else if (dataModel is SimpleSymptomResponse) {
             Log.i("symptomsresppnse ###", response)
             var model = Gson().fromJson(response, SimpleSymptomResponse::class.java).data
             var symptomsLM = FlexboxLayoutManager(this)
@@ -417,10 +427,10 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 //            binding.rvSymptoms.adapter = symptomsAdapter
             binding.progressBar.visibility = View.GONE
             binding.formLayout.visibility = View.VISIBLE
-        } else if (dataModel is UtilModel){
+        } else if (dataModel is UtilModel) {
             Log.i("response", response)
             var errors = Gson().fromJson(response, UtilModel::class.java).errors
-            if (errors){
+            if (errors) {
                 binding.formLayout.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(
@@ -433,7 +443,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
                 finishAffinity()
                 startActivity(Intent(this, MainActivity::class.java))
             }
-        } else if(dataModel is UtilModelArray){
+        } else if (dataModel is UtilModelArray) {
             val model = Gson().fromJson(response, ProfileResponse::class.java).data.user
             Log.i("response profile", response)
             fillDetails(model)
@@ -442,7 +452,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 
     private fun fillDetails(user: User) {
         et_name.editText?.setText(user.full_name)
-        if (user.gender == "Male" || user.gender == "male"){
+        if (user.gender == "Male" || user.gender == "male") {
             sp_gender.setSelection(0)
         } else {
             sp_gender.setSelection(1)
@@ -519,8 +529,8 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener{
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            when(requestCode){
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
                 460 -> {
                     binding.profileImage.setImageURI(data?.data)
                     profilePictureFile = ImagePicker.getFile(data)

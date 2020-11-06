@@ -23,6 +23,24 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_layout"
             app:menu="@menu/drawer_menu" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_app_version"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="App version" />
+
+            </LinearLayout>
+
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>

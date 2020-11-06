@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 package io.shivamvk.networklibrary.model.emuprofile
 
+import io.shivamvk.networklibrary.models.BaseModel
+
 
 data class User (
 
@@ -36,5 +38,6 @@ data class User (
 	val qualification : String,
 	val aadhaar : String,
 	val cheque : String,
-	val pan : String
-)
+	val pan : String,
+	val mobile_number: String
+): BaseModel

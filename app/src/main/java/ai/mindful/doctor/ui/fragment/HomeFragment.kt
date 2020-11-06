@@ -20,6 +20,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
+import android.os.CountDownTimer
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Toast
@@ -35,6 +36,8 @@ import io.shivamvk.networklibrary.api.ApiManagerListener
 import io.shivamvk.networklibrary.api.ApiRoutes
 import io.shivamvk.networklibrary.api.ApiService
 import io.shivamvk.networklibrary.model.UtilModel
+import io.shivamvk.networklibrary.model.UtilModelArray
+import io.shivamvk.networklibrary.model.UtilModelNullable
 import io.shivamvk.networklibrary.model.appointment.AppointmentResponse
 import io.shivamvk.networklibrary.model.banner.BannerResponse
 import io.shivamvk.networklibrary.models.BaseModel
@@ -103,28 +106,18 @@ class HomeFragment : Fragment(), ApiManagerListener {
             this,
             null
         ).doGETAPICall()
-        ApiManager(
-            ApiRoutes.upcomingBooking,
-            apiService,
-            AppointmentResponse(),
-            this,
-            null
-        ).doGETAPICall()
+        listenforLiveBookings()
         binding.activeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                startTimer()
                 ApiManager(
                     ApiRoutes.toggleAvailable,
                     apiService,
-                    UtilModel(),
+                    UtilModelNullable(),
                     this,
                     null
                 ).doPUTAPICall(JsonObject().apply {
                     addProperty("available", true)
                 })
-                Snackbar.make(active_switch, "You are now marked active!", Snackbar.LENGTH_SHORT)
-                    .setAction("Close") {}
-                    .show()
             } else {
                 Snackbar.make(active_switch, "You are now marked inactive!", Snackbar.LENGTH_SHORT)
                     .setAction("Close") {}
@@ -132,7 +125,7 @@ class HomeFragment : Fragment(), ApiManagerListener {
                 ApiManager(
                     ApiRoutes.toggleAvailable,
                     apiService,
-                    UtilModel(),
+                    UtilModelArray(),
                     this,
                     null
                 ).doPUTAPICall(JsonObject().apply {
@@ -148,6 +141,25 @@ class HomeFragment : Fragment(), ApiManagerListener {
                 )
             )
         }
+    }
+
+    private fun listenforLiveBookings() {
+        var timer = object: CountDownTimer(1000*60*60*24, 1000*20){
+            override fun onTick(millisUntilFinished: Long) {
+                ApiManager(
+                    ApiRoutes.upcomingBooking,
+                    apiService,
+                    AppointmentResponse(),
+                    this@HomeFragment,
+                    null
+                ).doGETAPICall()
+            }
+
+            override fun onFinish() {
+
+            }
+
+        }.start()
     }
 
     private fun startTimer() {
@@ -198,6 +210,20 @@ class HomeFragment : Fragment(), ApiManagerListener {
                 binding.upcomingBookingSection.visibility = View.VISIBLE
                 binding.rvAppointments.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 binding.rvAppointments.adapter = context?.let { AppointmentAdapter(it, model) }
+            } else {
+                binding.upcomingBookingSection.visibility = View.GONE
+            }
+        } else if (dataModel is UtilModelNullable){
+            Log.i("active", "$response###")
+            var model = Gson().fromJson(response, UtilModelNullable::class.java)
+            if (model.errors){
+                Toast.makeText(context, model.message, Toast.LENGTH_SHORT).show()
+                binding.activeSwitch.isChecked = false
+            } else {
+                Snackbar.make(active_switch, "You are now marked active!", Snackbar.LENGTH_SHORT)
+                    .setAction("Close") {}
+                    .show()
+                startTimer()
             }
         }
     }

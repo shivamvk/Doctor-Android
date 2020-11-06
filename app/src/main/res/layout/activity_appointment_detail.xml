@@ -120,7 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_light"
-                            android:text="@{booking.patient.age.toString() + ',' + ' ' + booking.patient.gender}"
+                            android:id="@+id/tv_dob_gender"
                             android:textColor="@color/colorDarkGrey"
                             android:textSize="14sp" />
 
@@ -138,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
-                            android:text="Past medical problems"
+                            android:text="History"
                             android:textSize="14sp" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -241,10 +241,92 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="100dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Physical examination"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_examination"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Review of systems(Ros)"
+                            android:textColor="@color/colorBlack"
+                            android:layout_marginTop="16dp"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rv_ros"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Assessment note"
+                            android:textColor="@color/colorBlack"
+                            android:layout_marginTop="16dp"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="@{booking.assesmentNote}"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Prescription"
+                            android:textColor="@color/colorBlack"
+                            android:layout_marginTop="16dp"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="@{booking.prescription}"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CAncelled"
+                    android:text="Cancelled"
                     android:textColor="@color/flat_red_1"
                     android:textSize="16sp"
                     android:visibility="gone"

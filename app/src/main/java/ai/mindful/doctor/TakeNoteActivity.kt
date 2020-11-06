@@ -42,6 +42,8 @@ class TakeNoteActivity : AppCompatActivity(), ApiManagerListener {
         binding.submit.setOnClickListener {
             if (binding.etAssessment.editText?.text.toString().isEmpty()) {
                 binding.etAssessment.error = "Please write a note of your booking"
+            } else if (binding.etPrescription.editText?.text.toString().isEmpty()) {
+                binding.etPrescription.error = "Please write a prescription for patient"
             } else {
                 binding.etAssessment.error = null
                 binding.submit.visibility = View.GONE
@@ -93,6 +95,10 @@ class TakeNoteActivity : AppCompatActivity(), ApiManagerListener {
                         addProperty(
                             "assesmentNote",
                             binding.etAssessment.editText?.text.toString()
+                        )
+                        addProperty(
+                            "prescription",
+                            binding.etPrescription.editText?.text.toString()
                         )
                         add("ros", rosjson)
                         add("examination", examjson)

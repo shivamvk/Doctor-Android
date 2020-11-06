@@ -15,8 +15,11 @@ import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -69,7 +72,9 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         // This callback occurs when the first video frame of a remote user is received and decoded after the remote user successfully joins the channel.
         // You can call the setupRemoteVideo method in this callback to set up the remote video view.
         override fun onFirstRemoteVideoDecoded(uid: Int, width: Int, height: Int, elapsed: Int) {
-            runOnUiThread { setupRemoteVideo(uid) }
+            runOnUiThread {
+                setupRemoteVideo(uid)
+            }
         }
 
         // Listen for the onUserOffline callback.
@@ -127,11 +132,39 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
         ).doGETAPICall()
         binding.remoteVideoViewContainer.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP){
-                if (templateBottomSheet != null)
-                    templateBottomSheet.show(supportFragmentManager, "templates")
+                if (templateBottomSheet != null) {
+                    if (!templateBottomSheet.isAdded){
+                        showBottomSheetTemplates()
+                    }
+                }
             }
             true
         }
+    }
+
+    private fun showBottomSheetTemplates() {
+        binding.localVideoViewContainer.visibility = View.INVISIBLE
+        binding.btnSwitchCamera.visibility = View.INVISIBLE
+        binding.btnMute.visibility = View.INVISIBLE
+        binding.btnCall.visibility = View.INVISIBLE
+        binding.timer.visibility = View.INVISIBLE
+        binding.controlPanel.visibility = View.INVISIBLE
+        binding.screen.layoutParams =
+            RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (450*resources.displayMetrics.density+0.5f).toInt())
+        Log.i("size reduced", "true")
+        templateBottomSheet.show(supportFragmentManager, "templates")
+    }
+
+    fun hideTemplateSheet(){
+        binding.screen.layoutParams =
+            RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        Log.i("size expanded", "true")
+        binding.localVideoViewContainer.visibility = View.VISIBLE
+        binding.btnSwitchCamera.visibility = View.VISIBLE
+        binding.btnMute.visibility = View.VISIBLE
+        binding.btnCall.visibility = View.VISIBLE
+        binding.timer.visibility = View.VISIBLE
+        binding.controlPanel.visibility = View.VISIBLE
     }
 
     fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
@@ -243,6 +276,9 @@ class VideoCallActivity : AppCompatActivity(), View.OnClickListener, RtmClientLi
                             m = "0${m}"
                         }
                         s = (seconds%60).toString()
+                    }
+                    if (seconds < 10){
+                        s = "0${seconds}"
                     }
                     binding.timer.text = "${m}:${s}"
                     startTimer()

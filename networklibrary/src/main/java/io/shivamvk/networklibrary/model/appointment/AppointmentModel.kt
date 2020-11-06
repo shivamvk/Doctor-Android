@@ -14,5 +14,20 @@ data class AppointmentModel(
     val symptoms: List<SymptomModel>? = null,
     var templateType: String = "",
     var status: String? = "",
-    var cancellationReason: String? = ""
+    var cancellationReason: String? = "",
+    var assesmentNote: String? = "",
+    var prescription: String? = "",
+    val examination: List<RosExamModel>? = null,
+    val ros: List<RosExamModel>? = null
+): BaseModel, Serializable
+
+data class RosExamModel(
+    val answers: List<RosExamAnswerModel>? = null,
+    val question: String? = ""
+): BaseModel, Serializable
+
+data class RosExamAnswerModel(
+    val _id: String? = "",
+    val option: String? = "",
+    val value: String? = ""
 ): BaseModel, Serializable

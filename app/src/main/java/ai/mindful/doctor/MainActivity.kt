@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             registerFcm()
         }
         toggle.syncState()
+        binding.tvAppVersion.text = "App Version ${ai.mindful.doctor.BuildConfig.VERSION_NAME} (${ai.mindful.doctor.BuildConfig.VERSION_CODE})"
         homeFragment = HomeFragment()
         goto(homeFragment)
         if (!ClientPrefs.isEazemeupClient){

@@ -1,11 +1,13 @@
 package ai.mindful.doctor.ui.bottomsheet
 
 import ai.mindful.doctor.R
+import ai.mindful.doctor.VideoCallActivity
 import ai.mindful.doctor.databinding.TemplateBottomSheetBinding
 import ai.mindful.doctor.ui.adapter.PillAdapter
 import ai.mindful.doctor.ui.adapter.QnaAdapter
 import ai.mindful.doctor.ui.adapter.TemplateExamAdapter
 import ai.mindful.doctor.ui.adapter.TemplateRosAdapter
+import ai.mindful.doctor.utils.CustomBindingAdapters
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -42,6 +44,7 @@ class TemplateBottomSheet(
         Log.i("ros", "shivamvk##### ${rosList.toString()}")
         Log.i("exam", "shivamvk#### ${examList.toString()}")
         binding.booking = appointmentModel
+        binding.dobGender.text = "${CustomBindingAdapters.readableStringFromISO(appointmentModel.patient?.dob!!)}, ${appointmentModel.patient?.gender}"
 
 //        var behavior = BottomSheetBehavior.from<RelativeLayout>(binding.bottomSheet)
 //        behavior.isDraggable = false
@@ -125,6 +128,7 @@ class TemplateBottomSheet(
             appointmentModel.templateType = binding.templateType.editText?.text.toString()
         }
         Log.i("callAssessment", callAsessmentModel.toString())
+        (activity as VideoCallActivity).hideTemplateSheet()
     }
 
     override fun onCreateView(

@@ -101,6 +101,15 @@
                 android:background="#303030"/>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date of birth"
+                android:textSize="12sp"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="16dp"
+                android:fontFamily="@font/poppins"/>
+
+            <TextView
                 android:id="@+id/et_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -272,6 +281,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Medical license expiration date"
+                android:textSize="12sp"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="16dp"
+                android:fontFamily="@font/poppins"/>
+
+            <TextView
                 android:id="@+id/et_medical_license_exp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -335,6 +353,15 @@
                     android:textColor="@color/colorBlack" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="DEA license expiration date"
+                android:textSize="12sp"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="16dp"
+                android:fontFamily="@font/poppins"/>
 
             <TextView
                 android:id="@+id/et_dea_exp_date"
@@ -404,7 +431,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Malpractice law suites"
+                android:text="Malpractice lawsuit"
                 android:textSize="16sp"
                 android:fontFamily="@font/poppins"/>
 

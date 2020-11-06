@@ -3,7 +3,9 @@ package ai.mindful.doctor
 import ai.mindful.doctor.databinding.ActivityAppointmentDetailBinding
 import ai.mindful.doctor.ui.adapter.PillAdapter
 import ai.mindful.doctor.ui.adapter.QnaAdapter
+import ai.mindful.doctor.ui.adapter.RosExamAdapter
 import ai.mindful.doctor.ui.bottomsheet.CancelOrderBottomSheet
+import ai.mindful.doctor.utils.CustomBindingAdapters
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -43,6 +45,7 @@ class AppointmentDetailActivity : AppCompatActivity() {
         } else if (appointmentModel.status == "Completed"){
             binding.call.text = "Called patient"
             binding.call.setOnClickListener(null)
+            binding.cancel.visibility = View.GONE
         }
         binding.cancel.setOnClickListener {
             var cbs = CancelOrderBottomSheet(appointmentModel._id)
@@ -98,6 +101,14 @@ class AppointmentDetailActivity : AppCompatActivity() {
         binding.rvQna.layoutManager = LinearLayoutManager(this)
         binding.rvQna.adapter =
             appointmentModel.symptoms?.get(0)?.questions?.let { QnaAdapter(this, it) }
+
+        binding.tvDobGender.text = CustomBindingAdapters.readableStringFromISO(appointmentModel.patient?.dob!!) + ", ${appointmentModel.patient?.gender}"
+
+        binding.rvExamination.layoutManager = LinearLayoutManager(this)
+        binding.rvExamination.adapter = RosExamAdapter(this, appointmentModel.examination!!)
+
+        binding.rvRos.layoutManager = LinearLayoutManager(this)
+        binding.rvRos.adapter = RosExamAdapter(this, appointmentModel.ros!!)
     }
 
     fun cancelOrder() {

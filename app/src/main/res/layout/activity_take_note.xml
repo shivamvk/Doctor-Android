@@ -49,6 +49,26 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_prescription"
+                android:layout_marginTop="32dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="Prescriptions">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:inputType="text"
+                    android:minLines="4"
+                    android:maxLines="4"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/poppins" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

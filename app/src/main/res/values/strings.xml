@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UMED Life Inc.</string>
+    <string name="app_name">UMED Life Doctor</string>
     <string name="bt_continue">Continue</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>

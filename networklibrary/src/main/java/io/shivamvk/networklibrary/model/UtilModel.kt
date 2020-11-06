@@ -19,3 +19,9 @@ data class UtilModelArray(
     var data: JsonArray = JsonArray(),
     var errors: Boolean = false
 ): BaseModel, Serializable
+
+data class UtilModelNullable(
+    var status: Long = 200,
+    var message: String = "",
+    var errors: Boolean = false
+): BaseModel, Serializable

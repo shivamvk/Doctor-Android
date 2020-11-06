@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/tools">
 
     <Transition
         app:constraintSetStart="@id/expanded"
         app:constraintSetEnd="@id/collapsed">
-
     </Transition>
 
     <ConstraintSet android:id="@+id/expanded">
@@ -15,86 +15,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <Constraint
-            android:id="@+id/local_video_view_container"
-            android:layout_width="150dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_height="200dp"/>
-
-        <Constraint
-            android:id="@+id/btn_call"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_width="60dp"
-            android:layout_marginBottom="8dp"
-            android:layout_height="60dp"/>
-
-        <Constraint
-            android:id="@+id/btn_switch_camera"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="54dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_height="54dp"/>
-
-        <Constraint
-            android:id="@+id/btn_mute"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_width="54dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_height="54dp"/>
-
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/collapsed">
 
         <Constraint
             android:id="@+id/remote_video_view_container"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
-            android:layout_marginBottom="60dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
-
-        <Constraint
-            android:id="@+id/local_video_view_container"
-            android:layout_width="50dp"
-            android:visibility="invisible"
-            android:layout_height="80dp"/>
-
-        <Constraint
-            android:id="@+id/btn_call"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="@id/remote_video_view_container"
-            app:layout_constraintLeft_toLeftOf="@id/remote_video_view_container"
-            android:layout_width="30dp"
-            android:layout_marginBottom="75dp"
-            android:layout_height="30dp"/>
-
-        <Constraint
-            android:id="@+id/btn_switch_camera"
-            android:layout_width="36dp"
-            android:visibility="invisible"
-            android:layout_marginBottom="60dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_height="36dp"/>
-
-        <Constraint
-            android:id="@+id/btn_mute"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/remote_video_view_container"
-            android:layout_width="36dp"
-            android:visibility="invisible"
-            android:layout_marginBottom="60dp"
-            android:layout_marginLeft="8dp"
-            android:layout_height="36dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
     </ConstraintSet>
 

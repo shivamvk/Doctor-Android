@@ -166,7 +166,7 @@ class EditProfileActivity : AppCompatActivity(),
 
         var json = JsonObject().apply {
             addProperty("full_name", et_name.editText?.text.toString())
-//            addProperty("mobile_number", et_mobile.editText?.text.toString())
+            addProperty("mobile_number", et_mobile.editText?.text.toString())
             addProperty("bio", et_bio.editText?.text.toString())
             addProperty("college", et_college.editText?.text.toString())
             addProperty("qualification", et_qualification.editText?.text.toString())
@@ -248,7 +248,7 @@ class EditProfileActivity : AppCompatActivity(),
 
     private fun fillDetails(user: User) {
         binding.etName.editText?.setText(user.full_name)
-        binding.etMobile.editText?.setText("1234567890")
+        binding.etMobile.editText?.setText(user.mobile_number)
         binding.etBio.editText?.setText(user.bio)
         binding.etCollege.editText?.setText(user.college)
         binding.etQualification.editText?.setText(user.qualification)

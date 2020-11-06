@@ -17,7 +17,8 @@
         <RelativeLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
+            android:layout_gravity="bottom"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <androidx.core.widget.NestedScrollView
@@ -28,13 +29,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="3dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/ic_dash" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -74,7 +68,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_light"
-                                android:text="@{booking.patient.age.toString() + ',' + ' ' + booking.patient.gender}"
+                                android:id="@+id/dob_gender"
                                 android:textColor="@color/colorDarkGrey"
                                 android:textSize="14sp" />
 
