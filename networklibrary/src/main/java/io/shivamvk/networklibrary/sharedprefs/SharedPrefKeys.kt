@@ -7,5 +7,7 @@ enum class SharedPrefKeys {
     USER_NAME,
     USER_PICTURE,
     FCM_TOKEN,
-    ONBOARDING_DONE
+    ONBOARDING_DONE,
+    LOCATION_LON,
+    LOCATION_LAN
 }

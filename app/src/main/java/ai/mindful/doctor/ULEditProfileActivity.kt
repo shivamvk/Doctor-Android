@@ -7,6 +7,7 @@ import ai.mindful.doctor.utils.CustomBindingAdapters
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -43,6 +44,8 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import io.shivamvk.networklibrary.sharedprefs.PreferencesHelper.get
+import io.shivamvk.networklibrary.sharedprefs.SharedPrefKeys
 
 class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener {
 
@@ -51,6 +54,7 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener {
     lateinit var symptomsAdapter: PillSelectorAdapter<SimpleSymptomModel>
     @Inject
     lateinit var apiService: ApiService
+    @Inject lateinit var prefs: SharedPreferences
     var dob = ""
     var medicalLicenseExpDate = ""
     var deaLicenseEXpDate = ""
@@ -229,6 +233,14 @@ class ULEditProfileActivity : AppCompatActivity(), ApiManagerListener {
                 addProperty("bank.customerName", et_customer_name.editText?.text.toString())
                 addProperty("bank.routingNumber", et_routing_number.editText?.text.toString())
                 addProperty("bank.accountNumber", et_account_number.editText?.text.toString())
+            }
+            if (prefs[SharedPrefKeys.LOCATION_LON.toString(), ""]?.isNotEmpty()!!
+                && prefs[SharedPrefKeys.LOCATION_LAN.toString(), ""]?.isNotEmpty()!!
+            ) {
+                var coor = JsonArray()
+                coor.add(prefs[SharedPrefKeys.LOCATION_LON.toString(), ""])
+                coor.add(prefs[SharedPrefKeys.LOCATION_LAN.toString(), ""])
+                jsonObject.add("coordinates", coor)
             }
             Log.i("updateProfile", jsonObject.toString())
             saveFiles()
